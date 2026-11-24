@@ -1,0 +1,1846 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duolingo Japanese - 100 Kanji N5 Master (Auto-Hide Per Kategori)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --duo-green: #58cc02;
+      --duo-green-dark: #58a700;
+      --duo-green-light: #d7ffb8;
+      --duo-green-text: #468c00;
+      
+      --duo-red: #ff4b4b;
+      --duo-red-dark: #ea2b2b;
+      --duo-red-light: #ffdfe0;
+      --duo-red-text: #d32f2f;
+
+      --duo-blue: #1cb0f6;
+      --duo-blue-dark: #1899d6;
+      --duo-blue-light: #ddf4ff;
+
+      --duo-yellow: #ffc800;
+      --duo-yellow-dark: #e5a400;
+
+      /* LIGHT THEME */
+      --duo-bg: #ffffff;
+      --duo-page-bg: #f7f9fa;
+      --duo-card-bg: #ffffff;
+      --duo-sub-bg: #f0f3f5;
+      --duo-input-bg: #f7f9fa;
+      --duo-border: #e5e5e5;
+      --duo-border-dark: #cecece;
+      --duo-text: #3c3c3c;
+      --duo-text-muted: #afafaf;
+      --duo-text-sub: #777777;
+      --duo-sheet-correct-bg: #d7ffb8;
+      --duo-sheet-wrong-bg: #ffdfe0;
+      --duo-sheet-tip-bg: rgba(255, 255, 255, 0.7);
+      --duo-scrollbar: #d1d5db;
+      --duo-scrollbar-hover: #9ca3af;
+      --duo-scrollbar-track: #f0f3f5;
+    }
+
+    /* DARK THEME */
+    body.dark-mode {
+      --duo-bg: #18262d;
+      --duo-page-bg: #131f24;
+      --duo-card-bg: #202f36;
+      --duo-sub-bg: #131f24;
+      --duo-input-bg: #131f24;
+      --duo-border: #37464f;
+      --duo-border-dark: #27353d;
+      --duo-text: #f1f5f9;
+      --duo-text-muted: #8b9ca7;
+      --duo-text-sub: #94a3b8;
+      --duo-blue-light: #183344;
+      --duo-green-light: #16361a;
+      --duo-red-light: #381a1c;
+      --duo-sheet-correct-bg: #14301a;
+      --duo-sheet-wrong-bg: #38171a;
+      --duo-sheet-tip-bg: rgba(0, 0, 0, 0.35);
+      --duo-scrollbar: #37464f;
+      --duo-scrollbar-hover: #4b5d68;
+      --duo-scrollbar-track: #18262d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', 'M PLUS Rounded 1c', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* UNIFIED SLEEK SCROLLBAR */
+    *::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    *::-webkit-scrollbar-track {
+      background: var(--duo-scrollbar-track);
+      border-radius: 10px;
+    }
+    *::-webkit-scrollbar-thumb {
+      background: var(--duo-scrollbar);
+      border-radius: 10px;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background: var(--duo-scrollbar-hover);
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--duo-scrollbar) var(--duo-scrollbar-track);
+    }
+
+    body {
+      background-color: var(--duo-page-bg);
+      color: var(--duo-text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    /* DUOLINGO STYLE RUBY FURIGANA */
+    ruby {
+      ruby-align: center;
+      ruby-position: over;
+    }
+
+    rt {
+      font-size: 0.52em;
+      color: var(--duo-blue);
+      font-weight: 800;
+      transform: translateY(-2px);
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    body.hide-furigana rt {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    body.hide-translation .trans-text,
+    body.hide-translation .opt-trans,
+    body.hide-translation .sentence-trans,
+    body.hide-translation .list-item-trans {
+      display: none !important;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--duo-bg);
+      border: 2px solid var(--duo-border);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    /* TOP TABS */
+    .duo-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: var(--duo-sub-bg);
+      padding: 6px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
+
+    .duo-tab-btn {
+      padding: 12px 14px;
+      background: transparent;
+      border: none;
+      color: var(--duo-text-sub);
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .duo-tab-btn.active {
+      background: var(--duo-card-bg);
+      color: var(--duo-blue);
+      box-shadow: 0 4px 0 var(--duo-border);
+    }
+
+    .tab-pill {
+      background: var(--duo-border);
+      color: var(--duo-text-sub);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 900;
+    }
+
+    .duo-tab-btn.active .tab-pill {
+      background: var(--duo-blue-light);
+      color: var(--duo-blue-dark);
+    }
+
+    body.dark-mode .duo-tab-btn.active .tab-pill {
+      color: #38bdf8;
+    }
+
+    /* QUIZ HEADER */
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-exit {
+      background: transparent;
+      border: none;
+      color: var(--duo-text-muted);
+      font-size: 1.5rem;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    .btn-exit:hover {
+      color: var(--duo-red);
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 16px;
+      background: var(--duo-border);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--duo-green);
+      width: 0%;
+      border-radius: 20px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 8px;
+      right: 8px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 4px;
+    }
+
+    .header-toggles {
+      display: flex;
+      gap: 6px;
+    }
+
+    .duo-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--duo-text-sub);
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-radius: 14px;
+      padding: 5px 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .duo-toggle input {
+      display: none;
+    }
+
+    .duo-toggle .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--duo-border-dark);
+      transition: all 0.2s;
+    }
+
+    .duo-toggle input:checked + .dot {
+      background: var(--duo-green);
+      box-shadow: 0 0 6px rgba(88, 204, 2, 0.5);
+    }
+
+    /* SPEECH BUBBLE & MASCOT */
+    .prompt-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .duo-mascot-svg {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      animation: gentleBounce 2s infinite ease-in-out;
+    }
+
+    @keyframes gentleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .speech-bubble {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-radius: 18px;
+      padding: 12px 18px;
+      position: relative;
+      flex: 1;
+      box-shadow: 0 3px 0 var(--duo-border);
+    }
+
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      left: -9px;
+      top: 16px;
+      width: 14px;
+      height: 14px;
+      background: var(--duo-card-bg);
+      border-left: 2px solid var(--duo-border);
+      border-bottom: 2px solid var(--duo-border);
+      transform: rotate(45deg);
+    }
+
+    .question-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--duo-text);
+      line-height: 1.4;
+    }
+
+    .category-chip {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--duo-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    /* DISPLAY HERO CARD */
+    .display-card {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 0 var(--duo-border);
+    }
+
+    .kanji-hero {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--duo-text);
+      line-height: 1.3;
+      margin: 4px 0;
+    }
+
+    .sentence-hero {
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 2.2;
+      color: var(--duo-text);
+    }
+
+    .sentence-trans {
+      font-size: 0.95rem;
+      color: var(--duo-blue);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .audio-play-btn {
+      background: var(--duo-blue);
+      border: none;
+      border-bottom: 4px solid var(--duo-blue-dark);
+      border-radius: 50%;
+      width: 76px;
+      height: 76px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+      box-shadow: 0 6px 16px rgba(28, 176, 246, 0.3);
+      margin: 10px auto;
+    }
+
+    .audio-play-btn:active {
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+    }
+
+    /* 3D CHUNKY OPTIONS */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    @media (max-width: 580px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .kanji-hero {
+        font-size: 3.2rem;
+      }
+    }
+
+    .duo-btn-opt {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-bottom: 4px solid var(--duo-border-dark);
+      border-radius: 18px;
+      padding: 16px 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+      min-height: 90px;
+      position: relative;
+    }
+
+    .duo-btn-opt:hover {
+      filter: brightness(1.04);
+      border-color: #64748b;
+    }
+
+    .duo-btn-opt:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .opt-number {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--duo-text-muted);
+      border: 2px solid var(--duo-border);
+      border-radius: 8px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .opt-kanji-text {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--duo-text);
+      line-height: 1.4;
+    }
+
+    .opt-trans {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--duo-text-sub);
+      margin-top: 4px;
+    }
+
+    .duo-btn-opt.correct {
+      background: var(--duo-green-light) !important;
+      border-color: var(--duo-green) !important;
+      border-bottom: 4px solid var(--duo-green-dark) !important;
+    }
+    .duo-btn-opt.correct .opt-kanji-text {
+      color: var(--duo-green-text) !important;
+    }
+    body.dark-mode .duo-btn-opt.correct .opt-kanji-text {
+      color: #6ee7b7 !important;
+    }
+
+    .duo-btn-opt.wrong {
+      background: var(--duo-red-light) !important;
+      border-color: var(--duo-red) !important;
+      border-bottom: 4px solid var(--duo-red-dark) !important;
+    }
+    .duo-btn-opt.wrong .opt-kanji-text {
+      color: var(--duo-red-text) !important;
+    }
+    body.dark-mode .duo-btn-opt.wrong .opt-kanji-text {
+      color: #fca5a5 !important;
+    }
+
+    /* TYPING BOX */
+    .typing-card {
+      margin-bottom: 25px;
+    }
+
+    .duo-input {
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--duo-input-bg);
+      border: 2px solid var(--duo-border);
+      border-bottom: 4px solid var(--duo-border-dark);
+      color: var(--duo-text);
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-align: center;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .duo-input:focus {
+      border-color: var(--duo-blue);
+      border-bottom-color: var(--duo-blue-dark);
+    }
+
+    /* BOTTOM ACTION SHEET */
+    .bottom-sheet {
+      margin-top: 15px;
+      border-radius: 20px;
+      padding: 18px;
+      display: none;
+      animation: sheetPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes sheetPop {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .bottom-sheet.correct-sheet {
+      background: var(--duo-sheet-correct-bg);
+      border: 2px solid var(--duo-green);
+    }
+
+    .bottom-sheet.wrong-sheet {
+      background: var(--duo-sheet-wrong-bg);
+      border: 2px solid var(--duo-red);
+    }
+
+    .sheet-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .correct-sheet .sheet-status { color: var(--duo-green-text); }
+    body.dark-mode .correct-sheet .sheet-status { color: #6ee7b7; }
+
+    .wrong-sheet .sheet-status { color: var(--duo-red-text); }
+    body.dark-mode .wrong-sheet .sheet-status { color: #fca5a5; }
+
+    .sheet-body {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--duo-text);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .sheet-tip {
+      background: var(--duo-sheet-tip-bg);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: var(--duo-text);
+    }
+
+    .btn-quick-exclude {
+      background: transparent;
+      border: 2px dashed var(--duo-red);
+      color: var(--duo-red);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 0.84rem;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      width: 100%;
+      transition: all 0.15s;
+    }
+
+    .btn-quick-exclude:hover {
+      background: var(--duo-red-light);
+    }
+
+    .btn-duo-cta {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 18px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: none;
+      background: var(--duo-green);
+      color: #ffffff;
+      border-bottom: 4px solid var(--duo-green-dark);
+      cursor: pointer;
+      transition: all 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-duo-cta:hover { filter: brightness(1.05); }
+    .btn-duo-cta:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+    .btn-duo-cta.wrong-cta {
+      background: var(--duo-red);
+      border-bottom-color: var(--duo-red-dark);
+    }
+
+    /* RESULT SCREEN */
+    #result-screen {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .result-score-badge {
+      display: inline-block;
+      background: var(--duo-yellow);
+      color: #ffffff;
+      font-size: 2.4rem;
+      font-weight: 900;
+      padding: 10px 28px;
+      border-radius: 24px;
+      border-bottom: 5px solid var(--duo-yellow-dark);
+      margin-bottom: 15px;
+    }
+
+    .review-scroll-box {
+      max-height: 320px;
+      overflow-y: auto;
+      text-align: left;
+      margin: 20px 0;
+      padding-right: 6px;
+    }
+
+    .review-duo-item {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .review-duo-item.pass { border-color: var(--duo-green); }
+    .review-duo-item.fail { border-color: var(--duo-red); }
+
+    /* ================= TAB 2: GUIDEBOOK LIST ================= */
+    #tab-kanji-list {
+      display: none;
+    }
+
+    .guidebook-banner {
+      background: var(--duo-blue);
+      border-bottom: 4px solid var(--duo-blue-dark);
+      border-radius: 20px;
+      padding: 18px;
+      color: white;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .guidebook-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .guidebook-sub {
+      font-size: 0.88rem;
+      opacity: 0.9;
+      font-weight: 700;
+    }
+
+    /* UTILITY BAR (AUTO-HIDE TOGGLE & COUNTER INFO) */
+    .list-utility-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .active-filter-indicator {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--duo-blue);
+    }
+
+    /* HORIZONTAL FILTER PILLS */
+    .filter-pills-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 2px 10px 2px;
+      margin-bottom: 14px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--duo-scrollbar) var(--duo-scrollbar-track);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-pills-row::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .duo-filter-chip {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-bottom: 3px solid var(--duo-border-dark);
+      padding: 8px 14px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--duo-text-sub);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.1s;
+      flex-shrink: 0;
+    }
+
+    .duo-filter-chip.active {
+      background: var(--duo-blue-light);
+      border-color: var(--duo-blue);
+      border-bottom-color: var(--duo-blue-dark);
+      color: var(--duo-blue-dark);
+    }
+    body.dark-mode .duo-filter-chip.active {
+      color: #38bdf8;
+    }
+
+    .duo-search-bar {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: var(--duo-input-bg);
+      border: 2px solid var(--duo-border);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--duo-text);
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    .duo-search-bar:focus {
+      border-color: var(--duo-blue);
+    }
+
+    .kanji-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .guide-kanji-card {
+      background: var(--duo-card-bg);
+      border: 2px solid var(--duo-border);
+      border-bottom: 4px solid var(--duo-border-dark);
+      border-radius: 20px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.1s ease;
+    }
+
+    .guide-kanji-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .guide-kanji-card.mastered {
+      background: var(--duo-green-light);
+      border-color: var(--duo-green);
+      border-bottom-color: var(--duo-green-dark);
+    }
+
+    .guide-kanji-card.excluded {
+      opacity: 0.6;
+      border-style: dashed;
+    }
+
+    .card-top-badges {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .btn-card-action {
+      background: var(--duo-sub-bg);
+      border: 1px solid var(--duo-border);
+      border-radius: 8px;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--duo-text-sub);
+      transition: all 0.1s;
+    }
+
+    .btn-card-action.active-excluded {
+      background: var(--duo-red-light);
+      border-color: var(--duo-red);
+      color: var(--duo-red-text);
+    }
+
+    .card-category-tag {
+      font-size: 0.68rem;
+      font-weight: 900;
+      color: var(--duo-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-kanji-val {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--duo-text);
+      margin: 4px 0;
+      line-height: 1.3;
+    }
+
+    .card-romaji-val {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--duo-blue);
+    }
+
+    .card-trans-val {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--duo-text-sub);
+      margin-top: 2px;
+    }
+
+    .btn-audio-mini {
+      background: var(--duo-blue-light);
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 8px;
+      color: var(--duo-blue-dark);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.dark-mode .btn-audio-mini {
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- DUOLINGO TOP TABS -->
+  <div class="duo-tabs">
+    <button class="duo-tab-btn active" id="tab-btn-quiz" onclick="switchDuoTab('quiz')">
+      <span>🎯 Latihan Kuis</span>
+      <span class="tab-pill" id="nav-quiz-count">50 Soal</span>
+    </button>
+    <button class="duo-tab-btn" id="tab-btn-list" onclick="switchDuoTab('list')">
+      <span>📖 Buku Kanji</span>
+      <span class="tab-pill" id="nav-mastered-count">0/100</span>
+    </button>
+  </div>
+
+  <!-- ================= TAB 1: QUIZ SCREEN ================= -->
+  <div id="tab-quiz">
+    <!-- HEADER BAR -->
+    <div class="quiz-header">
+      <button class="btn-exit" onclick="restartQuiz()" title="Mulai Ulang">✕</button>
+      
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="header-toggles">
+        <!-- TOGGLE DARK MODE -->
+        <label class="duo-toggle" title="Mode Gelap / Terang">
+          <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode(this.checked)">
+          <span class="dot"></span>
+          <span id="theme-icon">🌙</span>
+        </label>
+
+        <!-- TOGGLE FURIGANA -->
+        <label class="duo-toggle" title="Tampilkan/Sembunyikan Furigana">
+          <input type="checkbox" id="furigana-toggle" checked onchange="toggleFurigana(this.checked)">
+          <span class="dot"></span>
+          <span>🈸</span>
+        </label>
+
+        <!-- TOGGLE ARTI -->
+        <label class="duo-toggle" title="Tampilkan/Sembunyikan Arti Indonesia">
+          <input type="checkbox" id="trans-toggle" checked onchange="toggleTranslation(this.checked)">
+          <span class="dot"></span>
+          <span>🌐</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- QUIZ BODY -->
+    <div id="quiz-body-area">
+      <div class="prompt-row">
+        <!-- DUOLINGO VECTOR MASCOT -->
+        <svg class="duo-mascot-svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="#58cc02"/>
+          <circle cx="50" cy="58" r="32" fill="#78c800"/>
+          <circle cx="34" cy="40" r="16" fill="#ffffff"/>
+          <circle cx="66" cy="40" r="16" fill="#ffffff"/>
+          <circle cx="34" cy="40" r="8" fill="#4b4b4b"/>
+          <circle cx="66" cy="40" r="8" fill="#4b4b4b"/>
+          <circle cx="37" cy="37" r="3" fill="#ffffff"/>
+          <circle cx="69" cy="37" r="3" fill="#ffffff"/>
+          <polygon points="50,44 42,54 58,54" fill="#ff9600"/>
+          <ellipse cx="38" cy="94" rx="8" ry="4" fill="#ff9600"/>
+          <ellipse cx="62" cy="94" rx="8" ry="4" fill="#ff9600"/>
+        </svg>
+
+        <div class="speech-bubble">
+          <div class="category-chip" id="category-chip">Kata Kerja</div>
+          <div class="question-title" id="question-prompt">Pilih jawaban yang benar:</div>
+        </div>
+      </div>
+
+      <div class="display-card" id="display-card">
+        <div id="display-content"></div>
+      </div>
+
+      <div class="options-grid" id="options-container"></div>
+
+      <div class="typing-card" id="typing-container" style="display: none;">
+        <input type="text" id="typing-input" class="duo-input" placeholder="Ketik jawaban di sini..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="btn-duo-cta" style="margin-top: 15px;" id="btn-submit-typing" onclick="submitTypingAnswer()">Periksa Jawaban</button>
+      </div>
+
+      <div class="bottom-sheet" id="bottom-sheet">
+        <div class="sheet-status" id="sheet-status">
+          <span id="sheet-icon"></span>
+          <span id="sheet-title">Luar biasa!</span>
+        </div>
+        <div class="sheet-body" id="sheet-body"></div>
+        <button class="btn-quick-exclude" id="btn-quick-exclude" onclick="quickExcludeCurrentKanji()">🚫 Jangan Munculkan Kanji Ini Lagi di Kuis</button>
+        <button class="btn-duo-cta" id="btn-sheet-next" onclick="nextQuestion()">Lanjut ➔</button>
+      </div>
+    </div>
+
+    <div id="result-screen">
+      <div style="margin-bottom: 10px;">
+        <svg style="width: 80px; height: 80px;" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="#58cc02"/>
+          <polygon points="50,15 62,38 88,42 68,60 74,85 50,72 26,85 32,60 12,42 38,38" fill="#ffc800"/>
+        </svg>
+      </div>
+      <h2 style="font-size: 1.8rem; font-weight: 900; margin-bottom: 6px;">Sesi Latihan Selesai!</h2>
+      <p style="color: var(--duo-text-sub); font-weight: 700; margin-bottom: 20px;">Kamu telah menyelesaikan sesi latihan Kanji N5.</p>
+      
+      <div class="result-score-badge" id="final-score">0 / 50</div>
+      
+      <div class="review-scroll-box" id="review-list"></div>
+
+      <button class="btn-duo-cta" onclick="restartQuiz()">Roll Soal Acak Baru ➔</button>
+    </div>
+  </div>
+
+  <!-- ================= TAB 2: GUIDEBOOK LIST ================= -->
+  <div id="tab-kanji-list">
+    <div class="guidebook-banner">
+      <div>
+        <div class="guidebook-title">Buku Panduan 100 Kanji N5</div>
+        <div class="guidebook-sub" id="mastered-stats-text">0 dari 100 Kanji Dikuasai (0%)</div>
+      </div>
+      <div style="font-size: 2.2rem;">👑</div>
+    </div>
+
+    <input type="text" id="search-kanji" class="duo-search-bar" placeholder="🔍 Cari kanji, romaji, atau arti..." oninput="filterKanjiList()">
+
+    <!-- UTILITY BAR DENGAN TOGGLE AUTO-HIDE -->
+    <div class="list-utility-bar">
+      <!-- SAKLAR AUTO-HIDE KANJI YANG SUDAH DIHAFAL -->
+      <label class="duo-toggle" style="background: var(--duo-sub-bg); padding: 7px 12px;" title="Sembunyikan kanji yang sudah kamu tandai hafal di kategori ini">
+        <input type="checkbox" id="autohide-toggle" onchange="toggleAutoHideMastered(this.checked)">
+        <span class="dot"></span>
+        <span style="font-size:0.84rem;">🙈 Sembunyikan yang Sudah Hafal</span>
+      </label>
+
+      <span class="active-filter-indicator" id="category-filter-info">Kategori: Semua</span>
+    </div>
+
+    <!-- FILTER PILLS KATEGORI -->
+    <div class="filter-pills-row">
+      <button class="duo-filter-chip active" onclick="setListFilter('all', this)">Semua (100)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Kata Kerja', this)">Kata Kerja (40)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Kata Sifat', this)">Kata Sifat (20)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Waktu & Hari', this)">Waktu & Hari (15)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Arah & Posisi', this)">Arah & Posisi (10)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Alam', this)">Alam & Cuaca (6)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('Benda', this)">Benda & Tempat (9)</button>
+      <button class="duo-filter-chip" onclick="setListFilter('mastered', this)">👑 Hanya yang Hafal</button>
+      <button class="duo-filter-chip" onclick="setListFilter('excluded', this)">🚫 Dikeluarkan dari Kuis</button>
+    </div>
+
+    <div class="kanji-cards-grid" id="kanji-cards-container"></div>
+  </div>
+</div>
+
+<script>
+// ================= MASTER 100 SOAL KANJI JLPT N5 =================
+const questionBank = [
+  // 1-20 HEARING
+  { id: 1, targetWord: '食べる', type: 'hearing', category: 'Kata Kerja', audioText: 'たべます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>食<rt>た</rt></ruby>べる', romaji: 'taberu', meaning: 'Makan', isCorrect: true }, { kanji: '<ruby>飲<rt>の</rt></ruby>む', romaji: 'nomu', meaning: 'Minum', isCorrect: false }, { kanji: '<ruby>見<rt>み</rt></ruby>る', romaji: 'miru', meaning: 'Melihat / Menonton', isCorrect: false }, { kanji: '<ruby>寝<rt>ね</rt></ruby>る', romaji: 'neru', meaning: 'Tidur', isCorrect: false } ], explanation: 'Suara melafalkan "たべます" (bentuk kamus: 食べる = Makan).' },
+  { id: 2, targetWord: '行く', type: 'hearing', category: 'Kata Kerja', audioText: 'いきます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>行<rt>い</rt></ruby>く', romaji: 'iku', meaning: 'Pergi', isCorrect: true }, { kanji: '<ruby>来<rt>く</rt></ruby>る', romaji: 'kuru', meaning: 'Datang', isCorrect: false }, { kanji: '<ruby>帰<rt>かえ</rt></ruby>る', romaji: 'kaeru', meaning: 'Pulang', isCorrect: false }, { kanji: '<ruby>走<rt>はし</rt></ruby>る', romaji: 'hashiru', meaning: 'Berlari', isCorrect: false } ], explanation: 'Audio melafalkan "いきます" (行く = Pergi).' },
+  { id: 3, targetWord: '飲む', type: 'hearing', category: 'Kata Kerja', audioText: 'のみます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>飲<rt>の</rt></ruby>む', romaji: 'nomu', meaning: 'Minum', isCorrect: true }, { kanji: '<ruby>食<rt>た</rt></ruby>べる', romaji: 'taberu', meaning: 'Makan', isCorrect: false }, { kanji: '<ruby>吸<rt>す</rt></ruby>う', romaji: 'suu', meaning: 'Menghisap / Merokok', isCorrect: false }, { kanji: '<ruby>噛<rt>か</rt></ruby>む', romaji: 'kamu', meaning: 'Mengunyah', isCorrect: false } ], explanation: 'Audio melafalkan "のみます" (飲む = Minum).' },
+  { id: 4, targetWord: '聞く', type: 'hearing', category: 'Kata Kerja', audioText: 'ききます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>聞<rt>き</rt></ruby>く', romaji: 'kiku', meaning: 'Mendengar / Bertanya', isCorrect: true }, { kanji: '<ruby>話<rt>はな</rt></ruby>す', romaji: 'hanasu', meaning: 'Berbicara', isCorrect: false }, { kanji: '<ruby>書<rt>か</rt></ruby>く', romaji: 'kaku', meaning: 'Menulis', isCorrect: false }, { kanji: '<ruby>読<rt>よ</rt></ruby>む', romaji: 'yomu', meaning: 'Membaca', isCorrect: false } ], explanation: 'Audio melafalkan "ききます" (聞く = Mendengar/Bertanya).' },
+  { id: 5, targetWord: '帰る', type: 'hearing', category: 'Kata Kerja', audioText: 'かえります', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>帰<rt>かえ</rt></ruby>る', romaji: 'kaeru', meaning: 'Pulang', isCorrect: true }, { kanji: '<ruby>買<rt>か</rt></ruby>う', romaji: 'kau', meaning: 'Membeli', isCorrect: false }, { kanji: '<ruby>変<rt>か</rt></ruby>える', romaji: 'kaeru', meaning: 'Mengubah', isCorrect: false }, { kanji: '<ruby>返<rt>かえ</rt></ruby>す', romaji: 'kaesu', meaning: 'Mengembalikan', isCorrect: false } ], explanation: 'Audio melafalkan "かえります" (帰る = Pulang ke rumah).' },
+  { id: 6, targetWord: '見る', type: 'hearing', category: 'Kata Kerja', audioText: 'みます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>見<rt>み</rt></ruby>る', romaji: 'miru', meaning: 'Melihat / Menonton', isCorrect: true }, { kanji: '<ruby>着<rt>き</rt></ruby>る', romaji: 'kiru', meaning: 'Memakai', isCorrect: false }, { kanji: '<ruby>居<rt>い</rt></ruby>る', romaji: 'iru', meaning: 'Ada', isCorrect: false }, { kanji: '<ruby>切<rt>き</rt></ruby>る', romaji: 'kiru', meaning: 'Memotong', isCorrect: false } ], explanation: 'Audio melafalkan "みます" (見る = Melihat).' },
+  { id: 7, targetWord: '話す', type: 'hearing', category: 'Kata Kerja', audioText: 'はなします', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>話<rt>はな</rt></ruby>す', romaji: 'hanasu', meaning: 'Berbicara / Mengobrol', isCorrect: true }, { kanji: '<ruby>離<rt>はな</rt></ruby>す', romaji: 'hanasu', meaning: 'Melepaskan', isCorrect: false }, { kanji: '<ruby>出<rt>だ</rt></ruby>す', romaji: 'dasu', meaning: 'Mengeluarkan', isCorrect: false }, { kanji: '<ruby>放<rt>はな</rt></ruby>す', romaji: 'hanasu', meaning: 'Membebaskan', isCorrect: false } ], explanation: 'Audio melafalkan "はなします" (話す = Berbicara).' },
+  { id: 8, targetWord: '読む', type: 'hearing', category: 'Kata Kerja', audioText: 'よみます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>読<rt>よ</rt></ruby>む', romaji: 'yomu', meaning: 'Membaca', isCorrect: true }, { kanji: '<ruby>書<rt>か</rt></ruby>く', romaji: 'kaku', meaning: 'Menulis', isCorrect: false }, { kanji: '<ruby>呼<rt>よ</rt></ruby>ぶ', romaji: 'yobu', meaning: 'Memanggil', isCorrect: false }, { kanji: '<ruby>詠<rt>よ</rt></ruby>む', romaji: 'yomu', meaning: 'Membaca puisi', isCorrect: false } ], explanation: 'Audio melafalkan "よみます" (読む = Membaca).' },
+  { id: 9, targetWord: '書く', type: 'hearing', category: 'Kata Kerja', audioText: 'かきます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>書<rt>か</rt></ruby>く', romaji: 'kaku', meaning: 'Menulis', isCorrect: true }, { kanji: '<ruby>描<rt>えが</rt></ruby>く', romaji: 'egaku', meaning: 'Menggambar', isCorrect: false }, { kanji: '<ruby>聞<rt>き</rt></ruby>く', romaji: 'kiku', meaning: 'Mendengar', isCorrect: false }, { kanji: '<ruby>嗅<rt>か</rt></ruby>ぐ', romaji: 'kagu', meaning: 'Mencium bau', isCorrect: false } ], explanation: 'Audio melafalkan "かきます" (書く = Menulis).' },
+  { id: 10, targetWord: '買う', type: 'hearing', category: 'Kata Kerja', audioText: 'かいます', prompt: 'Dengarkan audio dan pilih Kanji yang tepat:', options: [ { kanji: '<ruby>買<rt>か</rt></ruby>う', romaji: 'kau', meaning: 'Membeli', isCorrect: true }, { kanji: '<ruby>売<rt>う</rt></ruby>る', romaji: 'uru', meaning: 'Menjual', isCorrect: false }, { kanji: '<ruby>飼<rt>か</rt></ruby>う', romaji: 'kau', meaning: 'Memelihara', isCorrect: false }, { kanji: '<ruby>通<rt>かよ</rt></ruby>う', romaji: 'kayou', meaning: 'Bolak-balik', isCorrect: false } ], explanation: 'Audio melafalkan "かいます" (買う = Membeli).' },
+  { id: 11, targetWord: '大きい', type: 'hearing', category: 'Kata Sifat', audioText: 'おおきい', prompt: 'Dengarkan audio kata sifat berikut:', options: [ { kanji: '<ruby>大<rt>おお</rt></ruby>きい', romaji: 'ookii', meaning: 'Besar', isCorrect: true }, { kanji: '<ruby>小<rt>ちい</rt></ruby>さい', romaji: 'chiisai', meaning: 'Kecil', isCorrect: false }, { kanji: '<ruby>多<rt>おお</rt></ruby>い', romaji: 'ooi', meaning: 'Banyak', isCorrect: false }, { kanji: '<ruby>高<rt>たか</rt></ruby>い', romaji: 'takai', meaning: 'Tinggi/Mahal', isCorrect: false } ], explanation: 'Audio menyebut "おおきい" (大きい = Besar).' },
+  { id: 12, targetWord: '小さい', type: 'hearing', category: 'Kata Sifat', audioText: 'ちいさい', prompt: 'Dengarkan audio kata sifat berikut:', options: [ { kanji: '<ruby>小<rt>ちい</rt></ruby>さい', romaji: 'chiisai', meaning: 'Kecil', isCorrect: true }, { kanji: '<ruby>大<rt>おお</rt></ruby>きい', romaji: 'ookii', meaning: 'Besar', isCorrect: false }, { kanji: '<ruby>少<rt>すく</rt></ruby>ない', romaji: 'sukunai', meaning: 'Sedikit', isCorrect: false }, { kanji: '<ruby>短<rt>みじか</rt></ruby>い', romaji: 'mijikai', meaning: 'Pendek', isCorrect: false } ], explanation: 'Audio menyebut "ちいさい" (小さい = Kecil).' },
+  { id: 13, targetWord: '高い', type: 'hearing', category: 'Kata Sifat', audioText: 'たかい', prompt: 'Dengarkan audio kata sifat berikut:', options: [ { kanji: '<ruby>高<rt>たか</rt></ruby>い', romaji: 'takai', meaning: 'Tinggi / Mahal', isCorrect: true }, { kanji: '<ruby>安<rt>やす</rt></ruby>い', romaji: 'yasui', meaning: 'Murah', isCorrect: false }, { kanji: '<ruby>低<rt>ひく</rt></ruby>い', romaji: 'hikui', meaning: 'Rendah', isCorrect: false }, { kanji: '<ruby>長<rt>なが</rt></ruby>い', romaji: 'nagai', meaning: 'Panjang', isCorrect: false } ], explanation: 'Audio menyebut "たかい" (高い = Tinggi atau Mahal).' },
+  { id: 14, targetWord: '安い', type: 'hearing', category: 'Kata Sifat', audioText: 'やすい', prompt: 'Dengarkan audio kata sifat berikut:', options: [ { kanji: '<ruby>安<rt>やす</rt></ruby>い', romaji: 'yasui', meaning: 'Murah / Aman', isCorrect: true }, { kanji: '<ruby>高<rt>たか</rt></ruby>い', romaji: 'takai', meaning: 'Mahal', isCorrect: false }, { kanji: '<ruby>休<rt>やす</rt></ruby>む', romaji: 'yasumu', meaning: 'Istirahat', isCorrect: false }, { kanji: '<ruby>易<rt>やさ</rt></ruby>しい', romaji: 'yasashii', meaning: 'Mudah', isCorrect: false } ], explanation: 'Audio menyebut "やすい" (安い = Murah).' },
+  { id: 15, targetWord: '新しい', type: 'hearing', category: 'Kata Sifat', audioText: 'あたらしい', prompt: 'Dengarkan audio kata sifat berikut:', options: [ { kanji: '<ruby>新<rt>あたら</rt></ruby>しい', romaji: 'atarashii', meaning: 'Baru', isCorrect: true }, { kanji: '<ruby>古<rt>ふる</rt></ruby>い', romaji: 'furui', meaning: 'Lama / Kuno', isCorrect: false }, { kanji: '<ruby>親<rt>おや</rt></ruby>', romaji: 'oya', meaning: 'Orang tua', isCorrect: false }, { kanji: '<ruby>明<rt>あか</rt></ruby>るい', romaji: 'akarui', meaning: 'Terang', isCorrect: false } ], explanation: 'Audio menyebut "あたらしい" (新しい = Baru).' },
+  { id: 16, targetWord: '赤い', type: 'hearing', category: 'Kata Sifat', audioText: 'あかい', prompt: 'Dengarkan audio warna berikut:', options: [ { kanji: '<ruby>赤<rt>あか</rt></ruby>い', romaji: 'akai', meaning: 'Merah', isCorrect: true }, { kanji: '<ruby>青<rt>あお</rt></ruby>い', romaji: 'aoi', meaning: 'Biru', isCorrect: false }, { kanji: '<ruby>白<rt>しろ</rt></ruby>い', romaji: 'shiroi', meaning: 'Putih', isCorrect: false }, { kanji: '<ruby>黒<rt>くろ</rt></ruby>い', romaji: 'kuroi', meaning: 'Hitam', isCorrect: false } ], explanation: 'Audio menyebut "あかい" (赤い = Merah).' },
+  { id: 17, targetWord: '青い', type: 'hearing', category: 'Kata Sifat', audioText: 'あおい', prompt: 'Dengarkan audio warna berikut:', options: [ { kanji: '<ruby>青<rt>あお</rt></ruby>い', romaji: 'aoi', meaning: 'Biru', isCorrect: true }, { kanji: '<ruby>赤<rt>あか</rt></ruby>い', romaji: 'akai', meaning: 'Merah', isCorrect: false }, { kanji: '<ruby>白<rt>しろ</rt></ruby>い', romaji: 'shiroi', meaning: 'Putih', isCorrect: false }, { kanji: '<ruby>緑<rt>みどり</rt></ruby>', romaji: 'midori', meaning: 'Hijau', isCorrect: false } ], explanation: 'Audio menyebut "あおい" (青い = Biru).' },
+  { id: 18, targetWord: '水', type: 'hearing', category: 'Alam', audioText: 'みず', prompt: 'Dengarkan audio alam/benda berikut:', options: [ { kanji: '<ruby>水<rt>みず</rt></ruby>', romaji: 'mizu', meaning: 'Air', isCorrect: true }, { kanji: '<ruby>火<rt>ひ</rt></ruby>', romaji: 'hi', meaning: 'Api', isCorrect: false }, { kanji: '<ruby>木<rt>き</rt></ruby>', romaji: 'ki', meaning: 'Pohon', isCorrect: false }, { kanji: '<ruby>土<rt>つち</rt></ruby>', romaji: 'tsuchi', meaning: 'Tanah', isCorrect: false } ], explanation: 'Audio menyebut "みず" (水 = Air).' },
+  { id: 19, targetWord: '雨', type: 'hearing', category: 'Alam', audioText: 'あめ', prompt: 'Dengarkan audio cuaca berikut:', options: [ { kanji: '<ruby>雨<rt>あめ</rt></ruby>', romaji: 'ame', meaning: 'Hujan', isCorrect: true }, { kanji: '<ruby>雪<rt>ゆき</rt></ruby>', romaji: 'yuki', meaning: 'Salju', isCorrect: false }, { kanji: '<ruby>風<rt>かぜ</rt></ruby>', romaji: 'kaze', meaning: 'Angin', isCorrect: false }, { kanji: '<ruby>雲<rt>くも</rt></ruby>', romaji: 'kumo', meaning: 'Awan', isCorrect: false } ], explanation: 'Audio menyebut "あめ" (雨 = Hujan).' },
+  { id: 20, targetWord: '電車', type: 'hearing', category: 'Benda', audioText: 'でんしゃ', prompt: 'Dengarkan audio transportasi berikut:', options: [ { kanji: '<ruby>電<rt>でん</rt>車<rt>しゃ</rt></ruby>', romaji: 'densha', meaning: 'Kereta Listrik', isCorrect: true }, { kanji: '<ruby>自<rt>じ</rt>転<rt>てん</rt>車<rt>しゃ</rt></ruby>', romaji: 'jitensha', meaning: 'Sepeda', isCorrect: false }, { kanji: '<ruby>電<rt>でん</rt>気<rt>き</rt></ruby>', romaji: 'denki', meaning: 'Listrik', isCorrect: false }, { kanji: '<ruby>電<rt>でん</rt>話<rt>わ</rt></ruby>', romaji: 'denwa', meaning: 'Telepon', isCorrect: false } ], explanation: 'Audio menyebut "でんしゃ" (電車 = Kereta Listrik).' },
+
+  // 21-45 READING
+  { id: 21, targetWord: '会う', type: 'reading', category: 'Kata Kerja', display: '会う', prompt: 'Pilih cara baca (Hiragana) yang tepat:', options: [ { kanji: 'あう', romaji: 'au', meaning: 'Bertemu', isCorrect: true }, { kanji: 'いう', romaji: 'iu', meaning: 'Berkata', isCorrect: false }, { kanji: 'かう', romaji: 'kau', meaning: 'Membeli', isCorrect: false }, { kanji: 'あらう', romaji: 'arau', meaning: 'Mencuci', isCorrect: false } ], explanation: '会う dibaca "あう (au)" artinya bertemu seseorang.' },
+  { id: 22, targetWord: '待つ', type: 'reading', category: 'Kata Kerja', display: '待つ', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'まつ', romaji: 'matsu', meaning: 'Menunggu', isCorrect: true }, { kanji: 'もつ', romaji: 'motsu', meaning: 'Membawa', isCorrect: false }, { kanji: 'たつ', romaji: 'tatsu', meaning: 'Berdiri', isCorrect: false }, { kanji: 'かつ', romaji: 'katsu', meaning: 'Menang', isCorrect: false } ], explanation: '待つ dibaca "まつ (matsu)" artinya Menunggu.' },
+  { id: 23, targetWord: '持つ', type: 'reading', category: 'Kata Kerja', display: '持つ', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'もつ', romaji: 'motsu', meaning: 'Membawa / Memegang', isCorrect: true }, { kanji: 'まつ', romaji: 'matsu', meaning: 'Menunggu', isCorrect: false }, { kanji: 'うつ', romaji: 'utsu', meaning: 'Memukul', isCorrect: false }, { kanji: 'かつ', romaji: 'katsu', meaning: 'Menang', isCorrect: false } ], explanation: '持つ dibaca "もつ (motsu)" artinya Membawa/Memegang.' },
+  { id: 24, targetWord: '立つ', type: 'reading', category: 'Kata Kerja', display: '立つ', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'たつ', romaji: 'tatsu', meaning: 'Berdiri', isCorrect: true }, { kanji: 'すわる', romaji: 'suwaru', meaning: 'Duduk', isCorrect: false }, { kanji: 'うつ', romaji: 'utsu', meaning: 'Memukul', isCorrect: false }, { kanji: 'かつ', romaji: 'katsu', meaning: 'Menang', isCorrect: false } ], explanation: '立つ dibaca "たつ (tatsu)" artinya Berdiri.' },
+  { id: 25, targetWord: '座る', type: 'reading', category: 'Kata Kerja', display: '座る', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'すわる', romaji: 'suwaru', meaning: 'Duduk', isCorrect: true }, { kanji: 'たつ', romaji: 'tatsu', meaning: 'Berdiri', isCorrect: false }, { kanji: 'さわる', romaji: 'sawaru', meaning: 'Menyentuh', isCorrect: false }, { kanji: 'ねる', romaji: 'neru', meaning: 'Tidur', isCorrect: false } ], explanation: '座る dibaca "すわる (suwaru)" artinya Duduk.' },
+  { id: 26, targetWord: '入る', type: 'reading', category: 'Kata Kerja', display: '入る', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'はいる', romaji: 'hairu', meaning: 'Masuk', isCorrect: true }, { kanji: 'деる', romaji: 'deru', meaning: 'Keluar', isCorrect: false }, { kanji: 'いれる', romaji: 'ireru', meaning: 'Memasukkan', isCorrect: false }, { kanji: 'おる', romaji: 'oru', meaning: 'Melipat', isCorrect: false } ], explanation: '入る dibaca "はいる (hairu)" = Masuk.' },
+  { id: 27, targetWord: '出る', type: 'reading', category: 'Kata Kerja', display: '出る', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'でる', romaji: 'deru', meaning: 'Keluar', isCorrect: true }, { kanji: 'だす', romaji: 'dasu', meaning: 'Mengeluarkan', isCorrect: false }, { kanji: 'はいる', romaji: 'hairu', meaning: 'Masuk', isCorrect: false }, { kanji: 'とる', romaji: 'toru', meaning: 'Mengambil', isCorrect: false } ], explanation: '出る dibaca "deru" = Keluar.' },
+  { id: 28, targetWord: '休む', type: 'reading', category: 'Kata Kerja', display: '休む', prompt: 'Pilih cara baca yang tepat:', options: [ { kanji: 'やすむ', romaji: 'yasumu', meaning: 'Istirahat / Libur', isCorrect: true }, { kanji: 'のむ', romaji: 'nomu', meaning: 'Minum', isCorrect: false }, { kanji: 'たのむ', romaji: 'tanomu', meaning: 'Memohon', isCorrect: false }, { kanji: 'すむ', romaji: 'sumu', meaning: 'Tinggal', isCorrect: false } ], explanation: '休む dibaca "やすむ (yasumu)" artinya Beristirahat.' },
+  { id: 29, targetWord: '古い', type: 'reading', category: 'Kata Sifat', display: '古い', prompt: 'Pilih cara baca Kanji Kata Sifat di atas:', options: [ { kanji: 'ふるい', romaji: 'furui', meaning: 'Lama / Kuno', isCorrect: true }, { kanji: 'あたらしい', romaji: 'atarashii', meaning: 'Baru', isCorrect: false }, { kanji: 'しろい', romaji: 'shiroi', meaning: 'Putih', isCorrect: false }, { kanji: 'くろい', romaji: 'kuroi', meaning: 'Hitam', isCorrect: false } ], explanation: '古い dibaca "ふるい (furui)" = Lama/Kuno.' },
+  { id: 30, targetWord: '白い', type: 'reading', category: 'Kata Sifat', display: '白い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'しろい', romaji: 'shiroi', meaning: 'Putih', isCorrect: true }, { kanji: 'くろい', romaji: 'kuroi', meaning: 'Hitam', isCorrect: false }, { kanji: 'あかい', romaji: 'akai', meaning: 'Merah', isCorrect: false }, { kanji: 'あおい', romaji: 'aoi', meaning: 'Biru', isCorrect: false } ], explanation: '白い dibaca "しろい (shiroi)" = Putih.' },
+  { id: 31, targetWord: '黒い', type: 'reading', category: 'Kata Sifat', display: '黒い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'くろい', romaji: 'kuroi', meaning: 'Hitam', isCorrect: true }, { kanji: 'しろい', romaji: 'shiroi', meaning: 'Putih', isCorrect: false }, { kanji: 'あかい', romaji: 'akai', meaning: 'Merah', isCorrect: false }, { kanji: 'あおい', romaji: 'aoi', meaning: 'Biru', isCorrect: false } ], explanation: '黒い dibaca "くろい (kuroi)" = Hitam.' },
+  { id: 32, targetWord: '長い', type: 'reading', category: 'Kata Sifat', display: '長い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'ながい', romaji: 'nagai', meaning: 'Panjang', isCorrect: true }, { kanji: 'みじかい', romaji: 'mijikai', meaning: 'Pendek', isCorrect: false }, { kanji: 'おもい', romaji: 'omoi', meaning: 'Berat', isCorrect: false }, { kanji: 'かるい', romaji: 'karui', meaning: 'Ringan', isCorrect: false } ], explanation: '長い dibaca "ながい (nagai)" = Panjang.' },
+  { id: 33, targetWord: '早い', type: 'reading', category: 'Kata Sifat', display: '早い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'はやい', romaji: 'hayai', meaning: 'Cepat / Pagi', isCorrect: true }, { kanji: 'おそい', romaji: 'osoi', meaning: 'Lambat / Telat', isCorrect: false }, { kanji: 'やすい', romaji: 'yasui', meaning: 'Murah', isCorrect: false }, { kanji: 'たかい', romaji: 'takai', meaning: 'Mahal', isCorrect: false } ], explanation: '早い dibaca "はやい (hayai)" = Cepat/Pagi hari.' },
+  { id: 34, targetWord: '多い', type: 'reading', category: 'Kata Sifat', display: '多い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'おおい', romaji: 'ooi', meaning: 'Banyak', isCorrect: true }, { kanji: 'すくない', romaji: 'sukunai', meaning: 'Sedikit', isCorrect: false }, { kanji: 'おおきい', romaji: 'ookii', meaning: 'Besar', isCorrect: false }, { kanji: 'ちいさい', romaji: 'chiisai', meaning: 'Kecil', isCorrect: false } ], explanation: '多い dibaca "おおい (ooi)" = Banyak.' },
+  { id: 35, targetWord: '少ない', type: 'reading', category: 'Kata Sifat', display: '少ない', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'すくない', romaji: 'sukunai', meaning: 'Sedikit', isCorrect: true }, { kanji: 'おおい', romaji: 'ooi', meaning: 'Banyak', isCorrect: false }, { kanji: 'ちいさい', romaji: 'chiisai', meaning: 'Kecil', isCorrect: false }, { kanji: 'すこし', romaji: 'sukoshi', meaning: 'Sedikit (adverb)', isCorrect: false } ], explanation: '少ない dibaca "すくない (sukunai)" = Sedikit.' },
+  { id: 36, targetWord: '明るい', type: 'reading', category: 'Kata Sifat', display: '明るい', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'あかるい', romaji: 'akarui', meaning: 'Terang / Ceria', isCorrect: true }, { kanji: 'くらい', romaji: 'kurai', meaning: 'Gelap', isCorrect: false }, { kanji: 'あたらしい', romaji: 'atarashii', meaning: 'Baru', isCorrect: false }, { kanji: 'あかい', romaji: 'akai', meaning: 'Merah', isCorrect: false } ], explanation: '明るい dibaca "あかるい (akarui)" = Terang.' },
+  { id: 37, targetWord: '近い', type: 'reading', category: 'Kata Sifat', display: '近い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'ちかい', romaji: 'chikai', meaning: 'Dekat', isCorrect: true }, { kanji: 'とおい', romaji: 'tooi', meaning: 'Jauh', isCorrect: false }, { kanji: 'はやい', romaji: 'hayai', meaning: 'Cepat', isCorrect: false }, { kanji: 'おそい', romaji: 'osoi', meaning: 'Lambat', isCorrect: false } ], explanation: '近い dibaca "ちかい (chikai)" = Dekat.' },
+  { id: 38, targetWord: '遠い', type: 'reading', category: 'Kata Sifat', display: '遠い', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'とおい', romaji: 'tooi', meaning: 'Jauh', isCorrect: true }, { kanji: 'ちかい', romaji: 'chikai', meaning: 'Dekat', isCorrect: false }, { kanji: 'ながい', romaji: 'nagai', meaning: 'Panjang', isCorrect: false }, { kanji: 'ふかい', romaji: 'fukai', meaning: 'Dalam', isCorrect: false } ], explanation: '遠い dibaca "とおい (tooi)" = Jauh.' },
+  { id: 39, targetWord: '時間', type: 'reading', category: 'Waktu & Hari', display: '時間', prompt: 'Pilih cara baca gabungan Kanji di atas:', options: [ { kanji: 'じかん', romaji: 'jikan', meaning: 'Waktu / Jam (durasi)', isCorrect: true }, { kanji: 'ときあい', romaji: 'tokiai', meaning: '-', isCorrect: false }, { kanji: 'じま', romaji: 'jima', meaning: '-', isCorrect: false }, { kanji: 'しんかん', romaji: 'shinkan', meaning: '-', isCorrect: false } ], explanation: '時間 dibaca "じかん (jikan)" = Waktu / jam.' },
+  { id: 40, targetWord: '毎日', type: 'reading', category: 'Waktu & Hari', display: '毎日', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'まいにち', romaji: 'mainichi', meaning: 'Setiap Hari', isCorrect: true }, { kanji: 'まいひ', romaji: 'maihi', meaning: '-', isCorrect: false }, { kanji: 'まいび', romaji: 'maibi', meaning: '-', isCorrect: false }, { kanji: 'まいつき', romaji: 'maitsuki', meaning: 'Setiap Bulan', isCorrect: false } ], explanation: '毎日 dibaca "まいにち (mainichi)" = Setiap hari.' },
+  { id: 41, targetWord: '友達', type: 'reading', category: 'Orang', display: '友達', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'ともだち', romaji: 'tomodachi', meaning: 'Teman / Sahabat', isCorrect: true }, { kanji: 'ゆうだち', romaji: 'yuudachi', meaning: 'Hujan deras sore', isCorrect: false }, { kanji: 'ゆうたつ', romaji: 'yuutatsu', meaning: '-', isCorrect: false }, { kanji: 'ともたつ', romaji: 'tomotatsu', meaning: '-', isCorrect: false } ], explanation: '友達 dibaca "ともだち (tomodachi)" = Teman.' },
+  { id: 42, targetWord: '先生', type: 'reading', category: 'Orang', display: '先生', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'せんせい', romaji: 'sensei', meaning: 'Guru / Dokter', isCorrect: true }, { kanji: 'さきなま', romaji: 'sakinama', meaning: '-', isCorrect: false }, { kanji: 'せいせん', romaji: 'seisen', meaning: '-', isCorrect: false }, { kanji: 'ぜんせい', romaji: 'zensei', meaning: '-', isCorrect: false } ], explanation: '先生 dibaca "せんせい (sensei)" = Guru.' },
+  { id: 43, targetWord: '学生', type: 'reading', category: 'Orang', display: '学生', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'がくせい', romaji: 'gakusei', meaning: 'Murid / Pelajar', isCorrect: true }, { kanji: 'まなびなま', romaji: 'manabinama', meaning: '-', isCorrect: false }, { kanji: 'がくしょう', romaji: 'gakushou', meaning: '-', isCorrect: false }, { kanji: 'がっせい', romaji: 'gassei', meaning: '-', isCorrect: false } ], explanation: '学生 dibaca "がくせい (gakusei)" = Pelajar.' },
+  { id: 44, targetWord: '学校', type: 'reading', category: 'Tempat', display: '学校', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'がっこう', romaji: 'gakkou', meaning: 'Sekolah', isCorrect: true }, { kanji: 'がくこう', romaji: 'gakukou', meaning: '-', isCorrect: false }, { kanji: 'まなびや', romaji: 'manabiya', meaning: '-', isCorrect: false }, { kanji: 'がっこ', romaji: 'gakko', meaning: '-', isCorrect: false } ], explanation: '学校 dibaca "がっこう (gakkou)" = Sekolah.' },
+  { id: 45, targetWord: '会社', type: 'reading', category: 'Tempat', display: '会社', prompt: 'Pilih cara baca Kanji di atas:', options: [ { kanji: 'かいしゃ', romaji: 'kaisha', meaning: 'Perusahaan / Kantor', isCorrect: true }, { kanji: 'しゃかい', romaji: 'shakai', meaning: 'Masyarakat', isCorrect: false }, { kanji: 'あいやしろ', romaji: 'aiyashiro', meaning: '-', isCorrect: false }, { kanji: 'えしゃ', romaji: 'esha', meaning: '-', isCorrect: false } ], explanation: '会社 dibaca "かいしゃ (kaisha)" = Perusahaan.' },
+
+  // 46-65 TYPING (SHORT ANSWER)
+  { id: 46, targetWord: '走る', type: 'typing', category: 'Kata Kerja', display: '走る', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['はしる', 'hashiru'], kanjiRuby: '<ruby>走<rt>はし</rt></ruby>る', romaji: 'hashiru', meaning: 'Berlari', explanation: '走る dibaca "はしる (hashiru)" = Berlari.' },
+  { id: 47, targetWord: '歩く', type: 'typing', category: 'Kata Kerja', display: '歩く', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['あるく', 'aruku'], kanjiRuby: '<ruby>歩<rt>ある</rt></ruby>く', romaji: 'aruku', meaning: 'Berjalan kaki', explanation: '歩く dibaca "あるく (aruku)" = Berjalan kaki.' },
+  { id: 48, targetWord: '泳ぐ', type: 'typing', category: 'Kata Kerja', display: '泳ぐ', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['およぐ', 'oyogu'], kanjiRuby: '<ruby>泳<rt>およ</rt></ruby>ぐ', romaji: 'oyogu', meaning: 'Berenang', explanation: '泳ぐ dibaca "およぐ (oyogu)" = Berenang.' },
+  { id: 49, targetWord: '働く', type: 'typing', category: 'Kata Kerja', display: '働く', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['はたらく', 'hataraku'], kanjiRuby: '<ruby>働<rt>はたら</rt></ruby>く', romaji: 'hataraku', meaning: 'Bekerja', explanation: '働く dibaca "はたらく (hataraku)" = Bekerja.' },
+  { id: 50, targetWord: '寝る', type: 'typing', category: 'Kata Kerja', display: '寝る', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['ねる', 'neru'], kanjiRuby: '<ruby>寝<rt>ね</rt></ruby>る', romaji: 'neru', meaning: 'Tidur', explanation: '寝る dibaca "ねる (neru)" = Tidur.' },
+  { id: 51, targetWord: '起きる', type: 'typing', category: 'Kata Kerja', display: '起きる', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['おきる', 'okiru'], kanjiRuby: '<ruby>起<rt>お</rt></ruby>きる', romaji: 'okiru', meaning: 'Bangun tidur', explanation: '起きる dibaca "おきる (okiru)" = Bangun tidur.' },
+  { id: 52, targetWord: '習う', type: 'typing', category: 'Kata Kerja', display: '習う', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['ならう', 'narau'], kanjiRuby: '<ruby>習<rt>なら</rt></ruby>う', romaji: 'narau', meaning: 'Belajar', explanation: '習う dibaca "ならう (narau)" = Belajar.' },
+  { id: 53, targetWord: '作る', type: 'typing', category: 'Kata Kerja', display: '作る', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['つくる', 'tsukuru'], kanjiRuby: '<ruby>作<rt>つく</rt></ruby>る', romaji: 'tsukuru', meaning: 'Membuat', explanation: '作る dibaca "つくる (tsukuru)" = Membuat.' },
+  { id: 54, targetWord: '使う', type: 'typing', category: 'Kata Kerja', display: '使う', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['つかう', 'tsukau'], kanjiRuby: '<ruby>使<rt>つか</rt></ruby>う', romaji: 'tsukau', meaning: 'Menggunakan', explanation: '使う dibaca "つかう (tsukau)" = Menggunakan.' },
+  { id: 55, targetWord: '洗う', type: 'typing', category: 'Kata Kerja', display: '洗う', prompt: 'Ketik cara baca Kanji di atas (Hiragana/Romaji):', correctAnswers: ['あらう', 'arau'], kanjiRuby: '<ruby>洗<rt>あら</rt></ruby>う', romaji: 'arau', meaning: 'Mencuci', explanation: '洗う dibaca "あらう (arau)" = Mencuci.' },
+  { id: 56, targetWord: '山', type: 'typing', category: 'Alam', display: '山', prompt: 'Ketik cara baca Kanji di atas (Gunung):', correctAnswers: ['やま', 'yama'], kanjiRuby: '<ruby>山<rt>やま</rt></ruby>', romaji: 'yama', meaning: 'Gunung', explanation: '山 dibaca "やま (yama)" = Gunung.' },
+  { id: 57, targetWord: '川', type: 'typing', category: 'Alam', display: '川', prompt: 'Ketik cara baca Kanji di atas (Sungai):', correctAnswers: ['かわ', 'kawa'], kanjiRuby: '<ruby>川<rt>かわ</rt></ruby>', romaji: 'kawa', meaning: 'Sungai', explanation: '川 dibaca "かわ (kawa)" = Sungai.' },
+  { id: 58, targetWord: '車', type: 'typing', category: 'Benda', display: '車', prompt: 'Ketik cara baca Kanji di atas (Mobil):', correctAnswers: ['くるま', 'kuruma'], kanjiRuby: '<ruby>車<rt>くるま</rt></ruby>', romaji: 'kuruma', meaning: 'Mobil / Kendaraan', explanation: '車 dibaca "くるま (kuruma)" = Mobil.' },
+  { id: 59, targetWord: '駅', type: 'typing', category: 'Tempat', display: '駅', prompt: 'Ketik cara baca Kanji di atas (Stasiun):', correctAnswers: ['えき', 'eki'], kanjiRuby: '<ruby>駅<rt>えき</rt></ruby>', romaji: 'eki', meaning: 'Stasiun kereta', explanation: '駅 dibaca "えき (eki)" = Stasiun.' },
+  { id: 60, targetWord: '魚', type: 'typing', category: 'Makanan', display: '魚', prompt: 'Ketik cara baca Kanji di atas (Ikan):', correctAnswers: ['さかな', 'sakana'], kanjiRuby: '<ruby>魚<rt>さかな</rt></ruby>', romaji: 'sakana', meaning: 'Ikan', explanation: '魚 dibaca "さかな (sakana)" = Ikan.' },
+  { id: 61, targetWord: '肉', type: 'typing', category: 'Makanan', display: '肉', prompt: 'Ketik cara baca Kanji di atas (Daging):', correctAnswers: ['にく', 'niku'], kanjiRuby: '<ruby>肉<rt>にく</rt></ruby>', romaji: 'niku', meaning: 'Daging', explanation: '肉 dibaca "にく (niku)" = Daging.' },
+  { id: 62, targetWord: '本', type: 'typing', category: 'Benda', display: '本', prompt: 'Ketik cara baca Kanji di atas (Buku):', correctAnswers: ['ほん', 'hon'], kanjiRuby: '<ruby>本<rt>ほん</rt></ruby>', romaji: 'hon', meaning: 'Buku', explanation: '本 dibaca "ほん (hon)" = Buku.' },
+  { id: 63, targetWord: '今日', type: 'typing', category: 'Waktu & Hari', display: '今日', prompt: 'Ketik cara baca Kanji di atas (Hari ini):', correctAnswers: ['きょう', 'kyou', 'kyo'], kanjiRuby: '<ruby>今<rt>きょう</rt>日<rt></rt></ruby>', romaji: 'kyou', meaning: 'Hari ini', explanation: '今日 dibaca "きょう (kyou)" = Hari ini.' },
+  { id: 64, targetWord: '明日', type: 'typing', category: 'Waktu & Hari', display: '明日', prompt: 'Ketik cara baca Kanji di atas (Besok):', correctAnswers: ['あした', 'ashita', 'あす', 'asu'], kanjiRuby: '<ruby>明<rt>あ</rt>日<rt>した</rt></ruby>', romaji: 'ashita', meaning: 'Besok', explanation: '明日 dibaca "あした (ashita)" = Besok.' },
+  { id: 65, targetWord: '日本', type: 'typing', category: 'Negara', display: '日本', prompt: 'Ketik cara baca Kanji di atas (Jepang):', correctAnswers: ['にほん', 'nihon', 'にっぽん', 'nippon'], kanjiRuby: '<ruby>日<rt>に</rt>本<rt>ほん</rt></ruby>', romaji: 'nihon', meaning: 'Jepang', explanation: '日本 dibaca "にほん (nihon)" = Jepang.' },
+
+  // 66-85 MEANING
+  { id: 66, targetWord: '始める', type: 'meaning', category: 'Kata Kerja', display: 'Memulai / Mulai', prompt: 'Pilih Kanji yang berarti "Memulai":', options: [ { kanji: '<ruby>始<rt>はじ</rt></ruby>める', romaji: 'hajimeru', meaning: 'Memulai', isCorrect: true }, { kanji: '<ruby>終<rt>お</rt></ruby>わる', romaji: 'owaru', meaning: 'Selesai', isCorrect: false }, { kanji: '<ruby>開<rt>あ</rt></ruby>ける', romaji: 'akeru', meaning: 'Membuka', isCorrect: false }, { kanji: '<ruby>止<rt>と</rt></ruby>める', romaji: 'tomeru', meaning: 'Menghentikan', isCorrect: false } ], explanation: '始める = Memulai.' },
+  { id: 67, targetWord: '終わる', type: 'meaning', category: 'Kata Kerja', display: 'Selesai / Berakhir', prompt: 'Pilih Kanji yang berarti "Selesai":', options: [ { kanji: '<ruby>終<rt>お</rt></ruby>わる', romaji: 'owaru', meaning: 'Selesai', isCorrect: true }, { kanji: '<ruby>始<rt>はじ</rt></ruby>まる', romaji: 'hajimaru', meaning: 'Dimulai', isCorrect: false }, { kanji: '<ruby>閉<rt>し</rt></ruby>める', romaji: 'shimeru', meaning: 'Menutup', isCorrect: false }, { kanji: '<ruby>止<rt>や</rt></ruby>む', romaji: 'yamu', meaning: 'Reda (hujan)', isCorrect: false } ], explanation: '終わる = Selesai / Berakhir.' },
+  { id: 68, targetWord: '開ける', type: 'meaning', category: 'Kata Kerja', display: 'Membuka', prompt: 'Pilih Kanji yang berarti "Membuka":', options: [ { kanji: '<ruby>開<rt>あ</rt></ruby>ける', romaji: 'akeru', meaning: 'Membuka', isCorrect: true }, { kanji: '<ruby>閉<rt>し</rt></ruby>める', romaji: 'shimeru', meaning: 'Menutup', isCorrect: false }, { kanji: '<ruby>始<rt>はじ</rt></ruby>める', romaji: 'hajimeru', meaning: 'Memulai', isCorrect: false }, { kanji: '<ruby>届<rt>とど</rt></ruby>ける', romaji: 'todokeru', meaning: 'Mengantar', isCorrect: false } ], explanation: '開ける = Membuka.' },
+  { id: 69, targetWord: '閉める', type: 'meaning', category: 'Kata Kerja', display: 'Menutup', prompt: 'Pilih Kanji yang berarti "Menutup":', options: [ { kanji: '<ruby>閉<rt>し</rt></ruby>める', romaji: 'shimeru', meaning: 'Menutup', isCorrect: true }, { kanji: '<ruby>開<rt>あ</rt></ruby>ける', romaji: 'akeru', meaning: 'Membuka', isCorrect: false }, { kanji: '<ruby>止<rt>と</rt></ruby>める', romaji: 'tomeru', meaning: 'Menghentikan', isCorrect: false }, { kanji: '<ruby>消<rt>け</rt></ruby>す', romaji: 'kesu', meaning: 'Mematikan', isCorrect: false } ], explanation: '閉める = Menutup.' },
+  { id: 70, targetWord: '忘れる', type: 'meaning', category: 'Kata Kerja', display: 'Lupa', prompt: 'Pilih Kanji yang berarti "Lupa":', options: [ { kanji: '<ruby>忘<rt>わす</rt></ruby>れる', romaji: 'wasureru', meaning: 'Lupa', isCorrect: true }, { kanji: '<ruby>覚<rt>おぼ</rt></ruby>える', romaji: 'oboeru', meaning: 'Mengingat', isCorrect: false }, { kanji: '<ruby>消<rt>き</rt></ruby>える', romaji: 'kieru', meaning: 'Lenyap', isCorrect: false }, { kanji: '<ruby>落<rt>お</rt></ruby>とす', romaji: 'otosu', meaning: 'Menjatuhkan', isCorrect: false } ], explanation: '忘れる = Lupa.' },
+  { id: 71, targetWord: '覚える', type: 'meaning', category: 'Kata Kerja', display: 'Mengingat / Menghafal', prompt: 'Pilih Kanji yang berarti "Mengingat":', options: [ { kanji: '<ruby>覚<rt>おぼ</rt></ruby>える', romaji: 'oboeru', meaning: 'Mengingat / Menghafal', isCorrect: true }, { kanji: '<ruby>考<rt>かんが</rt></ruby>える', romaji: 'kangaeru', meaning: 'Berpikir', isCorrect: false }, { kanji: '<ruby>忘<rt>わす</rt></ruby>れる', romaji: 'wasureru', meaning: 'Lupa', isCorrect: false }, { kanji: '<ruby>教<rt>おし</rt></ruby>える', romaji: 'oshieru', meaning: 'Mengajar', isCorrect: false } ], explanation: '覚える = Mengingat / Menghafal.' },
+  { id: 72, targetWord: '貸す', type: 'meaning', category: 'Kata Kerja', display: 'Meminjamkan', prompt: 'Pilih Kanji yang berarti "Meminjamkan":', options: [ { kanji: '<ruby>貸<rt>か</rt></ruby>す', romaji: 'kasu', meaning: 'Meminjamkan', isCorrect: true }, { kanji: '<ruby>借<rt>か</rt></ruby>りる', romaji: 'kariru', meaning: 'Meminjam', isCorrect: false }, { kanji: '<ruby>返<rt>かえ</rt></ruby>す', romaji: 'kaesu', meaning: 'Mengembalikan', isCorrect: false }, { kanji: '<ruby>渡<rt>わた</rt></ruby>す', romaji: 'watasu', meaning: 'Menyerahkan', isCorrect: false } ], explanation: '貸す = Meminjamkan.' },
+  { id: 73, targetWord: '借りる', type: 'meaning', category: 'Kata Kerja', display: 'Meminjam', prompt: 'Pilih Kanji yang berarti "Meminjam":', options: [ { kanji: '<ruby>借<rt>か</rt></ruby>りる', romaji: 'kariru', meaning: 'Meminjam', isCorrect: true }, { kanji: '<ruby>貸<rt>か</rt></ruby>す', romaji: 'kasu', meaning: 'Meminjamkan', isCorrect: false }, { kanji: '<ruby>買<rt>か</rt></ruby>う', romaji: 'kau', meaning: 'Membeli', isCorrect: false }, { kanji: '<ruby>取<rt>と</rt></ruby>る', romaji: 'toru', meaning: 'Mengambil', isCorrect: false } ], explanation: '借りる = Meminjam.' },
+  { id: 74, targetWord: '知る', type: 'meaning', category: 'Kata Kerja', display: 'Mengetahui / Kenal', prompt: 'Pilih Kanji yang berarti "Mengetahui":', options: [ { kanji: '<ruby>知<rt>し</rt></ruby>る', romaji: 'shiru', meaning: 'Tahu / Mengetahui', isCorrect: true }, { kanji: '<ruby>分<rt>わ</rt></ruby>かる', romaji: 'wakaru', meaning: 'Paham', isCorrect: false }, { kanji: '<ruby>思<rt>おも</rt></ruby>う', romaji: 'omou', meaning: 'Berpikir', isCorrect: false }, { kanji: '<ruby>聞<rt>き</rt></ruby>く', romaji: 'kiku', meaning: 'Mendengar', isCorrect: false } ], explanation: '知る = Mengetahui/Kenal.' },
+  { id: 75, targetWord: '押す', type: 'meaning', category: 'Kata Kerja', display: 'Mendorong / Menekan', prompt: 'Pilih Kanji yang berarti "Mendorong / Menekan":', options: [ { kanji: '<ruby>押<rt>お</rt></ruby>す', romaji: 'osu', meaning: 'Mendorong / Menekan', isCorrect: true }, { kanji: '<ruby>引<rt>ひ</rt></ruby>く', romaji: 'hiku', meaning: 'Menarik', isCorrect: false }, { kanji: '<ruby>落<rt>お</rt></ruby>とす', romaji: 'otosu', meaning: 'Menjatuhkan', isCorrect: false }, { kanji: '<ruby>直<rt>なお</rt></ruby>す', romaji: 'naosu', meaning: 'Memperbaiki', isCorrect: false } ], explanation: '押す = Mendorong/Menekan tombol.' },
+  { id: 76, targetWord: '上', type: 'meaning', category: 'Arah & Posisi', display: 'Atas', prompt: 'Pilih Kanji yang berarti "Atas":', options: [ { kanji: '<ruby>上<rt>うえ</rt></ruby>', romaji: 'ue', meaning: 'Atas', isCorrect: true }, { kanji: '<ruby>下<rt>した</rt></ruby>', romaji: 'shita', meaning: 'Bawah', isCorrect: false }, { kanji: '<ruby>中<rt>なか</rt></ruby>', romaji: 'naka', meaning: 'Dalam', isCorrect: false }, { kanji: '<ruby>外<rt>そと</rt></ruby>', romaji: 'soto', meaning: 'Luar', isCorrect: false } ], explanation: '上 = Atas.' },
+  { id: 77, targetWord: '下', type: 'meaning', category: 'Arah & Posisi', display: 'Bawah', prompt: 'Pilih Kanji yang berarti "Bawah":', options: [ { kanji: '<ruby>下<rt>した</rt></ruby>', romaji: 'shita', meaning: 'Bawah', isCorrect: true }, { kanji: '<ruby>上<rt>うえ</rt></ruby>', romaji: 'ue', meaning: 'Atas', isCorrect: false }, { kanji: '<ruby>前<rt>まえ</rt></ruby>', romaji: 'mae', meaning: 'Depan', isCorrect: false }, { kanji: '<ruby>後<rt>うし</rt></ruby>ろ', romaji: 'ushiro', meaning: 'Belakang', isCorrect: false } ], explanation: '下 = Bawah.' },
+  { id: 78, targetWord: '中', type: 'meaning', category: 'Arah & Posisi', display: 'Dalam / Tengah', prompt: 'Pilih Kanji yang berarti "Dalam / Tengah":', options: [ { kanji: '<ruby>中<rt>なか</rt></ruby>', romaji: 'naka', meaning: 'Dalam / Tengah', isCorrect: true }, { kanji: '<ruby>外<rt>そと</rt></ruby>', romaji: 'soto', meaning: 'Luar', isCorrect: false }, { kanji: '<ruby>間<rt>あいだ</rt></ruby>', romaji: 'aida', meaning: 'Antara', isCorrect: false }, { kanji: '<ruby>横<rt>よこ</rt></ruby>', romaji: 'yoko', meaning: 'Samping', isCorrect: false } ], explanation: '中 = Dalam / Tengah.' },
+  { id: 79, targetWord: '右', type: 'meaning', category: 'Arah & Posisi', display: 'Kanan', prompt: 'Pilih Kanji yang berarti "Kanan":', options: [ { kanji: '<ruby>右<rt>みぎ</rt></ruby>', romaji: 'migi', meaning: 'Kanan', isCorrect: true }, { kanji: '<ruby>左<rt>ひだり</rt></ruby>', romaji: 'hidari', meaning: 'Kiri', isCorrect: false }, { kanji: '<ruby>石<rt>いし</rt></ruby>', romaji: 'ishi', meaning: 'Batu', isCorrect: false }, { kanji: '<ruby>有<rt>あ</rt></ruby>る', romaji: 'aru', meaning: 'Ada', isCorrect: false } ], explanation: '右 (migi) = Kanan.' },
+  { id: 80, targetWord: '左', type: 'meaning', category: 'Arah & Posisi', display: 'Kiri', prompt: 'Pilih Kanji yang berarti "Kiri":', options: [ { kanji: '<ruby>左<rt>ひだり</rt></ruby>', romaji: 'hidari', meaning: 'Kiri', isCorrect: true }, { kanji: '<ruby>右<rt>みぎ</rt></ruby>', romaji: 'migi', meaning: 'Kanan', isCorrect: false }, { kanji: '<ruby>在<rt>あ</rt></ruby>る', romaji: 'aru', meaning: 'Berada', isCorrect: false }, { kanji: '<ruby>工<rt>こう</rt></ruby>', romaji: 'kou', meaning: 'Konstruksi', isCorrect: false } ], explanation: '左 (hidari) = Kiri.' },
+  { id: 81, targetWord: '前', type: 'meaning', category: 'Arah & Posisi', display: 'Depan / Sebelum', prompt: 'Pilih Kanji yang berarti "Depan / Sebelum":', options: [ { kanji: '<ruby>前<rt>まえ</rt></ruby>', romaji: 'mae', meaning: 'Depan / Sebelum', isCorrect: true }, { kanji: '<ruby>後<rt>うし</rt></ruby>ろ', romaji: 'ushiro', meaning: 'Belakang', isCorrect: false }, { kanji: '<ruby>次<rt>つぎ</rt></ruby>', romaji: 'tsugi', meaning: 'Berikutnya', isCorrect: false }, { kanji: '<ruby>先<rt>さき</rt></ruby>', romaji: 'saki', meaning: 'Ujung / Duluan', isCorrect: false } ], explanation: '前 = Depan.' },
+  { id: 82, targetWord: '後ろ', type: 'meaning', category: 'Arah & Posisi', display: 'Belakang / Setelah', prompt: 'Pilih Kanji yang berarti "Belakang / Setelah":', options: [ { kanji: '<ruby>後<rt>うし</rt></ruby>ろ', romaji: 'ushiro', meaning: 'Belakang', isCorrect: true }, { kanji: '<ruby>前<rt>まえ</rt></ruby>', romaji: 'mae', meaning: 'Depan', isCorrect: false }, { kanji: '<ruby>待<rt>ま</rt></ruby>つ', romaji: 'matsu', meaning: 'Menunggu', isCorrect: false }, { kanji: '<ruby>行<rt>い</rt></ruby>く', romaji: 'iku', meaning: 'Pergi', isCorrect: false } ], explanation: '後ろ / 後 = Belakang / Sesudah.' },
+  { id: 83, targetWord: '東', type: 'meaning', category: 'Arah & Posisi', display: 'Timur', prompt: 'Pilih Kanji yang berarti "Timur":', options: [ { kanji: '<ruby>東<rt>ひがし</rt></ruby>', romaji: 'higashi', meaning: 'Timur', isCorrect: true }, { kanji: '<ruby>西<rt>にし</rt></ruby>', romaji: 'nishi', meaning: 'Barat', isCorrect: false }, { kanji: '<ruby>南<rt>みなみ</rt></ruby>', romaji: 'minami', meaning: 'Selatan', isCorrect: false }, { kanji: '<ruby>北<rt>きた</rt></ruby>', romaji: 'kita', meaning: 'Utara', isCorrect: false } ], explanation: '東 (higashi) = Timur.' },
+  { id: 84, targetWord: '西', type: 'meaning', category: 'Arah & Posisi', display: 'Barat', prompt: 'Pilih Kanji yang berarti "Barat":', options: [ { kanji: '<ruby>西<rt>にし</rt></ruby>', romaji: 'nishi', meaning: 'Barat', isCorrect: true }, { kanji: '<ruby>東<rt>ひがし</rt></ruby>', romaji: 'higashi', meaning: 'Timur', isCorrect: false }, { kanji: '<ruby>南<rt>みなみ</rt></ruby>', romaji: 'minami', meaning: 'Selatan', isCorrect: false }, { kanji: '<ruby>北<rt>きた</rt></ruby>', romaji: 'kita', meaning: 'Utara', isCorrect: false } ], explanation: '西 (nishi) = Barat.' },
+  { id: 85, targetWord: '父', type: 'meaning', category: 'Orang', display: 'Ayah', prompt: 'Pilih Kanji yang berarti "Ayah":', options: [ { kanji: '<ruby>父<rt>ちち</rt></ruby>', romaji: 'chichi', meaning: 'Ayah', isCorrect: true }, { kanji: '<ruby>母<rt>はは</rt></ruby>', romaji: 'haha', meaning: 'Ibu', isCorrect: false }, { kanji: '<ruby>兄<rt>あに</rt></ruby>', romaji: 'ani', meaning: 'Kakak Laki-laki', isCorrect: false }, { kanji: '<ruby>男<rt>おとこ</rt></ruby>', romaji: 'otoko', meaning: 'Laki-laki', isCorrect: false } ], explanation: '父 (chichi) = Ayah.' },
+
+  // 86-100 CONTEXT
+  { id: 86, targetWord: '来る', type: 'context', category: 'Kata Kerja', sentence: '<ruby>明<rt>あ</rt>日<rt>した</rt></ruby>、<ruby>友<rt>とも</rt>達<rt>だち</rt></ruby>が<ruby>私<rt>わたし</rt></ruby>の<ruby>家<rt>いえ</rt></ruby>に［ ___ ］。', sentenceMeaning: 'Besok teman akan datang ke rumah saya.', prompt: 'Lengkapi kalimat dengan Kanji yang tepat (Datang):', options: [ { kanji: '<ruby>来<rt>く</rt></ruby>る', romaji: 'kuru', meaning: 'Datang', isCorrect: true }, { kanji: '<ruby>行<rt>い</rt></ruby>く', romaji: 'iku', meaning: 'Pergi', isCorrect: false }, { kanji: '<ruby>帰<rt>かえ</rt></ruby>る', romaji: 'kaeru', meaning: 'Pulang', isCorrect: false }, { kanji: '<ruby>入<rt>はい</rt></ruby>る', romaji: 'hairu', meaning: 'Masuk', isCorrect: false } ], explanation: 'Teman datang ke rumah = 来る (kuru).' },
+  { id: 87, targetWord: '持つ', type: 'context', category: 'Kata Kerja', sentence: '<ruby>傘<rt>かさ</rt></ruby>を［ ___ ］いますか。', sentenceMeaning: 'Apakah kamu membawa payung?', prompt: 'Pilih bentuk Kanji yang tepat untuk "membawa/memegang":', options: [ { kanji: '<ruby>持<rt>も</rt></ruby>って', romaji: 'motte', meaning: 'Membawa / Memegang', isCorrect: true }, { kanji: '<ruby>待<rt>ま</rt></ruby>って', romaji: 'matte', meaning: 'Menunggu', isCorrect: false }, { kanji: '<ruby>立<rt>た</rt></ruby>って', romaji: 'tatte', meaning: 'Berdiri', isCorrect: false }, { kanji: '<ruby>使<rt>つか</rt></ruby>って', romaji: 'tsukatte', meaning: 'Menggunakan', isCorrect: false } ], explanation: '持っています = Membawa/Memiliki.' },
+  { id: 88, targetWord: '走る', type: 'context', category: 'Kata Kerja', sentence: '<ruby>毎<rt>まい</rt>朝<rt>あさ</rt></ruby>、<ruby>公<rt>こう</rt>園<rt>えん</rt></ruby>を［ ___ ］ます。', sentenceMeaning: 'Setiap pagi, saya berlari di taman.', prompt: 'Pilih Kanji yang tepat untuk "berlari":', options: [ { kanji: '<ruby>走<rt>はし</rt></ruby>り', romaji: 'hashiri', meaning: 'Berlari', isCorrect: true }, { kanji: '<ruby>歩<rt>ある</rt></ruby>き', romaji: 'aruki', meaning: 'Berjalan kaki', isCorrect: false }, { kanji: '<ruby>泳<rt>およ</rt></ruby>ぎ', romaji: 'oyogi', meaning: 'Berenang', isCorrect: false }, { kanji: '<ruby>通<rt>とお</rt></ruby>り', romaji: 'toori', meaning: 'Melewati', isCorrect: false } ], explanation: '走り (hashiri) berasal dari 走る = Berlari.' },
+  { id: 89, targetWord: '寝る', type: 'context', category: 'Kata Kerja', sentence: '<ruby>昨<rt>きのう</rt>日<rt></rt></ruby>は<ruby>夜<rt>よる</rt></ruby>11<ruby>時<rt>じ</rt></ruby>に［ ___ ］ました。', sentenceMeaning: 'Kemarin saya tidur pada jam 11 malam.', prompt: 'Pilih Kanji yang tepat untuk "tidur":', options: [ { kanji: '<ruby>寝<rt>ね</rt></ruby>', romaji: 'ne', meaning: 'Tidur', isCorrect: true }, { kanji: '<ruby>休<rt>やす</rt></ruby>', romaji: 'yasu', meaning: 'Istirahat', isCorrect: false }, { kanji: '<ruby>起<rt>お</rt></ruby>', romaji: 'o', meaning: 'Bangun', isCorrect: false }, { kanji: '<ruby>居<rt>い</rt></ruby>', romaji: 'i', meaning: 'Ada', isCorrect: false } ], explanation: '寝ました (nemashita) = Tidur.' },
+  { id: 90, targetWord: '使う', type: 'context', category: 'Kata Kerja', sentence: 'パソコンを［ ___ ］て<ruby>仕<rt>し</rt>事<rt>ごと</rt></ruby>をします。', sentenceMeaning: 'Bekerja dengan menggunakan komputer.', prompt: 'Pilih Kanji yang tepat untuk "menggunakan":', options: [ { kanji: '<ruby>使<rt>つか</rt></ruby>っ', romaji: 'tsukat', meaning: 'Menggunakan', isCorrect: true }, { kanji: '<ruby>作<rt>つく</rt></ruby>っ', romaji: 'tsukut', meaning: 'Membuat', isCorrect: false }, { kanji: '<ruby>頼<rt>たの</rt></ruby>っ', romaji: 'tayot', meaning: 'Mengandalkan', isCorrect: false }, { kanji: '<ruby>持<rt>も</rt></ruby>っ', romaji: 'mot', meaning: 'Membawa', isCorrect: false } ], explanation: '使って (tsukatte) berasal dari 使う = Menggunakan.' },
+  { id: 91, targetWord: '閉める', type: 'context', category: 'Kata Kerja', sentence: '<ruby>寒<rt>さむ</rt></ruby>いですから、ドアを［ ___ ］てください。', sentenceMeaning: 'Karena dingin, tolong tutup pintunya.', prompt: 'Pilih Kanji yang tepat untuk "menutup":', options: [ { kanji: '<ruby>閉<rt>し</rt></ruby>め', romaji: 'shime', meaning: 'Menutup', isCorrect: true }, { kanji: '<ruby>開<rt>あ</rt></ruby>け', romaji: 'ake', meaning: 'Membuka', isCorrect: false }, { kanji: '<ruby>止<rt>と</rt></ruby>め', romaji: 'tome', meaning: 'Menghentikan', isCorrect: false }, { kanji: '<ruby>消<rt>け</rt></ruby>し', romaji: 'keshi', meaning: 'Mematikan', isCorrect: false } ], explanation: '閉めてください = Tolong tutup (閉める).' },
+  { id: 92, targetWord: '引く', type: 'context', category: 'Kata Kerja', sentence: 'ドアの<ruby>取<rt>と</rt></ruby>っ<ruby>手<rt>て</rt></ruby>を［ ___ ］てください。', sentenceMeaning: 'Tolong tarik gagang pintunya.', prompt: 'Pilih Kanji yang tepat untuk "menarik":', options: [ { kanji: '<ruby>引<rt>ひ</rt></ruby>い', romaji: 'hii', meaning: 'Menarik', isCorrect: true }, { kanji: '<ruby>押<rt>お</rt></ruby>し', romaji: 'oshi', meaning: 'Mendorong', isCorrect: false }, { kanji: '<ruby>取<rt>と</rt></ruby>っ', romaji: 'tot', meaning: 'Mengambil', isCorrect: false }, { kanji: '<ruby>回<rt>まわ</rt></ruby>し', romaji: 'mawashi', meaning: 'Memutar', isCorrect: false } ], explanation: '引いて (hiite) berasal dari 引く = Menarik.' },
+  { id: 93, targetWord: '借りる', type: 'context', category: 'Kata Kerja', sentence: '<ruby>図<rt>と</rt>書<rt>しょ</rt>館<rt>かん</rt></ruby>で<ruby>本<rt>ほん</rt></ruby>を［ ___ ］ました。', sentenceMeaning: 'Meminjam buku di perpustakaan.', prompt: 'Pilih Kanji yang tepat untuk "meminjam":', options: [ { kanji: '<ruby>借<rt>か</rt></ruby>り', romaji: 'kari', meaning: 'Meminjam', isCorrect: true }, { kanji: '<ruby>貸<rt>か</rt></ruby>し', romaji: 'kashi', meaning: 'Meminjamkan', isCorrect: false }, { kanji: '<ruby>返<rt>かえ</rt></ruby>し', romaji: 'kaeshi', meaning: 'Mengembalikan', isCorrect: false }, { kanji: '<ruby>買<rt>か</rt></ruby>い', romaji: 'kai', meaning: 'Membeli', isCorrect: false } ], explanation: '借りる = Meminjam.' },
+  { id: 94, targetWord: '見る', type: 'context', category: 'Kata Kerja', sentence: 'テレビを［ ___ ］ながらご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べます。', sentenceMeaning: 'Makan nasi sambil menonton TV.', prompt: 'Pilih Kanji yang tepat untuk "menonton / melihat":', options: [ { kanji: '<ruby>見<rt>み</rt></ruby>', romaji: 'mi', meaning: 'Melihat / Menonton', isCorrect: true }, { kanji: '<ruby>聞<rt>き</rt></ruby>', romaji: 'ki', meaning: 'Mendengar', isCorrect: false }, { kanji: '<ruby>読<rt>よ</rt></ruby>', romaji: 'yo', meaning: 'Membaca', isCorrect: false }, { kanji: '<ruby>会<rt>あ</rt></ruby>', romaji: 'a', meaning: 'Bertemu', isCorrect: false } ], explanation: '見ながら (minagara) = Sambil menonton.' },
+  { id: 95, targetWord: '洗う', type: 'context', category: 'Kata Kerja', sentence: 'ご<ruby>飯<rt>はん</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>に<ruby>手<rt>て</rt></ruby>を［ ___ ］ます。', sentenceMeaning: 'Sebelum makan, mencuci tangan.', prompt: 'Pilih Kanji yang tepat untuk "mencuci":', options: [ { kanji: '<ruby>洗<rt>あら</rt></ruby>い', romaji: 'arai', meaning: 'Mencuci', isCorrect: true }, { kanji: '<ruby>使<rt>つか</rt></ruby>い', romaji: 'tsukai', meaning: 'Menggunakan', isCorrect: false }, { kanji: '<ruby>拭<rt>ふ</rt></ruby>き', romaji: 'fuki', meaning: 'Mengelap', isCorrect: false }, { kanji: '<ruby>切<rt>き</rt></ruby>り', romaji: 'kiri', meaning: 'Memotong', isCorrect: false } ], explanation: '洗います (araimasu) = Mencuci.' },
+  { id: 96, targetWord: '高い', type: 'context', category: 'Kata Sifat', sentence: 'このレストランの<ruby>料<rt>りょう</rt>理<rt>り</rt></ruby>はとても［ ___ ］です。', sentenceMeaning: 'Masakan restoran ini sangat mahal harganya.', prompt: 'Pilih Kanji yang tepat untuk "mahal":', options: [ { kanji: '<ruby>高<rt>たか</rt></ruby>い', romaji: 'takai', meaning: 'Tinggi / Mahal', isCorrect: true }, { kanji: '<ruby>安<rt>やす</rt></ruby>い', romaji: 'yasui', meaning: 'Murah', isCorrect: false }, { kanji: '<ruby>長<rt>なが</rt></ruby>い', romaji: 'nagai', meaning: 'Panjang', isCorrect: false }, { kanji: '<ruby>大<rt>おお</rt></ruby>きい', romaji: 'ookii', meaning: 'Besar', isCorrect: false } ], explanation: '高い (takai) = Mahal / Tinggi.' },
+  { id: 97, targetWord: '安い', type: 'context', category: 'Kata Sifat', sentence: 'この<ruby>服<rt>ふく</rt></ruby>は1000<ruby>円<rt>えん</rt></ruby>ですから、とても［ ___ ］です。', sentenceMeaning: 'Karena baju ini 1000 yen, sangat murah.', prompt: 'Pilih Kanji yang tepat untuk "murah":', options: [ { kanji: '<ruby>安<rt>やす</rt></ruby>い', romaji: 'yasui', meaning: 'Murah', isCorrect: true }, { kanji: '<ruby>高<rt>たか</rt></ruby>い', romaji: 'takai', meaning: 'Mahal', isCorrect: false }, { kanji: '<ruby>古<rt>ふる</rt></ruby>い', romaji: 'furui', meaning: 'Lama', isCorrect: false }, { kanji: '<ruby>新<rt>あたら</rt></ruby>しい', romaji: 'atarashii', meaning: 'Baru', isCorrect: false } ], explanation: '安い (yasui) = Murah.' },
+  { id: 98, targetWord: '雨', type: 'context', category: 'Alam', sentence: '<ruby>外<rt>そと</rt></ruby>は［ ___ ］が<ruby>降<rt>ふ</rt></ruby>っていますから、<ruby>傘<rt>かさ</rt></ruby>を<ruby>持<rt>も</rt></ruby>って<ruby>行<rt>い</rt></ruby>きます。', sentenceMeaning: 'Karena di luar sedang turun hujan, membawa payung.', prompt: 'Pilih Kanji yang tepat untuk "hujan":', options: [ { kanji: '<ruby>雨<rt>あめ</rt></ruby>', romaji: 'ame', meaning: 'Hujan', isCorrect: true }, { kanji: '<ruby>雪<rt>ゆき</rt></ruby>', romaji: 'yuki', meaning: 'Salju', isCorrect: false }, { kanji: '<ruby>風<rt>かぜ</rt></ruby>', romaji: 'kaze', meaning: 'Angin', isCorrect: false }, { kanji: '<ruby>雲<rt>くも</rt></ruby>', romaji: 'kumo', meaning: 'Awan', isCorrect: false } ], explanation: '雨 (ame) = Hujan.' },
+  { id: 99, targetWord: '駅', type: 'context', category: 'Tempat', sentence: '3<ruby>時<rt>じ</rt></ruby>に［ ___ ］の<ruby>前<rt>まえ</rt></ruby>で<ruby>会<rt>あ</rt></ruby>いましょう。', sentenceMeaning: 'Ayo bertemu jam 3 di depan stasiun.', prompt: 'Pilih Kanji yang tepat untuk "stasiun":', options: [ { kanji: '<ruby>駅<rt>えき</rt></ruby>', romaji: 'eki', meaning: 'Stasiun', isCorrect: true }, { kanji: '<ruby>校<rt>こう</rt></ruby>', romaji: 'kou', meaning: 'Sekolah', isCorrect: false }, { kanji: '<ruby>店<rt>みせ</rt></ruby>', romaji: 'mise', meaning: 'Toko', isCorrect: false }, { kanji: '<ruby>道<rt>みち</rt></ruby>', romaji: 'michi', meaning: 'Jalan', isCorrect: false } ], explanation: '駅 (eki) = Stasiun kereta.' },
+  { id: 100, targetWord: '車', type: 'context', category: 'Benda', sentence: '<ruby>父<rt>ちち</rt></ruby>の［ ___ ］で<ruby>海<rt>うみ</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きました。', sentenceMeaning: 'Pergi ke laut dengan mobil ayah.', prompt: 'Pilih Kanji yang tepat untuk "mobil":', options: [ { kanji: '<ruby>車<rt>くるま</rt></ruby>', romaji: 'kuruma', meaning: 'Mobil', isCorrect: true }, { kanji: '<ruby>電<rt>でん</rt>気<rt>き</rt></ruby>', romaji: 'denki', meaning: 'Listrik', isCorrect: false }, { kanji: '<ruby>本<rt>ほん</rt></ruby>', romaji: 'hon', meaning: 'Buku', isCorrect: false }, { kanji: '<ruby>船<rt>ふね</rt></ruby>', romaji: 'fune', meaning: 'Kapal', isCorrect: false } ], explanation: '車 (kuruma) = Mobil / Kendaraan.' }
+];
+
+// ================= MASTER LIST 100 KANJI N5 =================
+const kanjiMasterList = [
+  // 1-40: Kata Kerja
+  { id: 1, ruby: '<ruby>食<rt>た</rt></ruby>べる', plain: '食べる', romaji: 'taberu', meaning: 'Makan', category: 'Kata Kerja', audio: 'たべる' },
+  { id: 2, ruby: '<ruby>飲<rt>の</rt></ruby>む', plain: '飲む', romaji: 'nomu', meaning: 'Minum', category: 'Kata Kerja', audio: 'のむ' },
+  { id: 3, ruby: '<ruby>行<rt>い</rt></ruby>く', plain: '行く', romaji: 'iku', meaning: 'Pergi', category: 'Kata Kerja', audio: 'いく' },
+  { id: 4, ruby: '<ruby>来<rt>く</rt></ruby>る', plain: '来る', romaji: 'kuru', meaning: 'Datang', category: 'Kata Kerja', audio: 'くる' },
+  { id: 5, ruby: '<ruby>帰<rt>かえ</rt></ruby>る', plain: '帰る', romaji: 'kaeru', meaning: 'Pulang', category: 'Kata Kerja', audio: 'かえる' },
+  { id: 6, ruby: '<ruby>見<rt>み</rt></ruby>る', plain: '見る', romaji: 'miru', meaning: 'Melihat / Menonton', category: 'Kata Kerja', audio: 'みる' },
+  { id: 7, ruby: '<ruby>聞<rt>き</rt></ruby>く', plain: '聞く', romaji: 'kiku', meaning: 'Mendengar / Bertanya', category: 'Kata Kerja', audio: 'きく' },
+  { id: 8, ruby: '<ruby>読<rt>よ</rt></ruby>む', plain: '読む', romaji: 'yomu', meaning: 'Membaca', category: 'Kata Kerja', audio: 'よむ' },
+  { id: 9, ruby: '<ruby>書<rt>か</rt></ruby>く', plain: '書く', romaji: 'kaku', meaning: 'Menulis', category: 'Kata Kerja', audio: 'かく' },
+  { id: 10, ruby: '<ruby>話<rt>はな</rt></ruby>す', plain: '話す', romaji: 'hanasu', meaning: 'Berbicara / Mengobrol', category: 'Kata Kerja', audio: 'はなす' },
+  { id: 11, ruby: '<ruby>買<rt>か</rt></ruby>う', plain: '買う', romaji: 'kau', meaning: 'Membeli', category: 'Kata Kerja', audio: 'かう' },
+  { id: 12, ruby: '<ruby>売<rt>う</rt></ruby>る', plain: '売る', romaji: 'uru', meaning: 'Menjual', category: 'Kata Kerja', audio: 'うる' },
+  { id: 13, ruby: '<ruby>会<rt>あ</rt></ruby>う', plain: '会う', romaji: 'au', meaning: 'Bertemu', category: 'Kata Kerja', audio: 'あう' },
+  { id: 14, ruby: '<ruby>待<rt>ま</rt></ruby>つ', plain: '待つ', romaji: 'matsu', meaning: 'Menunggu', category: 'Kata Kerja', audio: 'まつ' },
+  { id: 15, ruby: '<ruby>持<rt>も</rt></ruby>つ', plain: '持つ', romaji: 'motsu', meaning: 'Membawa / Memegang', category: 'Kata Kerja', audio: 'もつ' },
+  { id: 16, ruby: '<ruby>立<rt>た</rt></ruby>つ', plain: '立つ', romaji: 'tatsu', meaning: 'Berdiri', category: 'Kata Kerja', audio: 'たつ' },
+  { id: 17, ruby: '<ruby>座<rt>すわ</rt></ruby>る', plain: '座る', romaji: 'suwaru', meaning: 'Duduk', category: 'Kata Kerja', audio: 'すわる' },
+  { id: 18, ruby: '<ruby>入<rt>はい</rt></ruby>る', plain: '入る', romaji: 'hairu', meaning: 'Masuk', category: 'Kata Kerja', audio: 'はいる' },
+  { id: 19, ruby: '<ruby>出<rt>で</rt></ruby>る', plain: '出る', romaji: 'deru', meaning: 'Keluar', category: 'Kata Kerja', audio: 'でる' },
+  { id: 20, ruby: '<ruby>休<rt>やす</rt></ruby>む', plain: '休む', romaji: 'yasumu', meaning: 'Istirahat / Libur', category: 'Kata Kerja', audio: 'やすむ' },
+  { id: 21, ruby: '<ruby>走<rt>はし</rt></ruby>る', plain: '走る', romaji: 'hashiru', meaning: 'Berlari', category: 'Kata Kerja', audio: 'はしる' },
+  { id: 22, ruby: '<ruby>歩<rt>ある</rt></ruby>く', plain: '歩く', romaji: 'aruku', meaning: 'Berjalan kaki', category: 'Kata Kerja', audio: 'あるく' },
+  { id: 23, ruby: '<ruby>泳<rt>およ</rt></ruby>ぐ', plain: '泳ぐ', romaji: 'oyogu', meaning: 'Berenang', category: 'Kata Kerja', audio: 'およぐ' },
+  { id: 24, ruby: '<ruby>働<rt>はたら</rt></ruby>く', plain: '働く', romaji: 'hataraku', meaning: 'Bekerja', category: 'Kata Kerja', audio: 'はたらく' },
+  { id: 25, ruby: '<ruby>寝<rt>ね</rt></ruby>る', plain: '寝る', romaji: 'neru', meaning: 'Tidur', category: 'Kata Kerja', audio: 'ねる' },
+  { id: 26, ruby: '<ruby>起<rt>お</rt></ruby>きる', plain: '起きる', romaji: 'okiru', meaning: 'Bangun tidur', category: 'Kata Kerja', audio: 'おきる' },
+  { id: 27, ruby: '<ruby>教<rt>おし</rt></ruby>える', plain: '教える', romaji: 'oshieru', meaning: 'Mengajar / Memberitahu', category: 'Kata Kerja', audio: 'おしえる' },
+  { id: 28, ruby: '<ruby>習<rt>なら</rt></ruby>う', plain: '習う', romaji: 'narau', meaning: 'Belajar / Mempelajari', category: 'Kata Kerja', audio: 'ならう' },
+  { id: 29, ruby: '<ruby>作<rt>つく</rt></ruby>る', plain: '作る', romaji: 'tsukuru', meaning: 'Membuat', category: 'Kata Kerja', audio: 'つくる' },
+  { id: 30, ruby: '<ruby>使<rt>つか</rt></ruby>う', plain: '使う', romaji: 'tsukau', meaning: 'Menggunakan', category: 'Kata Kerja', audio: 'つかう' },
+  { id: 31, ruby: '<ruby>洗<rt>あら</rt></ruby>う', plain: '洗う', romaji: 'arau', meaning: 'Mencuci', category: 'Kata Kerja', audio: 'あらう' },
+  { id: 32, ruby: '<ruby>始<rt>はじ</rt></ruby>める', plain: '始める', romaji: 'hajimeru', meaning: 'Memulai', category: 'Kata Kerja', audio: 'はじめる' },
+  { id: 33, ruby: '<ruby>終<rt>お</rt></ruby>わる', plain: '終わる', romaji: 'owaru', meaning: 'Selesai / Berakhir', category: 'Kata Kerja', audio: 'おわる' },
+  { id: 34, ruby: '<ruby>開<rt>あ</rt></ruby>ける', plain: '開ける', romaji: 'akeru', meaning: 'Membuka', category: 'Kata Kerja', audio: 'あける' },
+  { id: 35, ruby: '<ruby>閉<rt>し</rt></ruby>める', plain: '閉める', romaji: 'shimeru', meaning: 'Menutup', category: 'Kata Kerja', audio: 'しめる' },
+  { id: 36, ruby: '<ruby>忘<rt>わす</rt></ruby>れる', plain: '忘れる', romaji: 'wasureru', meaning: 'Lupa', category: 'Kata Kerja', audio: 'わすれる' },
+  { id: 37, ruby: '<ruby>覚<rt>おぼ</rt></ruby>える', plain: '覚える', romaji: 'oboeru', meaning: 'Mengingat / Menghafal', category: 'Kata Kerja', audio: 'おぼえる' },
+  { id: 38, ruby: '<ruby>貸<rt>か</rt></ruby>す', plain: '貸す', romaji: 'kasu', meaning: 'Meminjamkan', category: 'Kata Kerja', audio: 'かす' },
+  { id: 39, ruby: '<ruby>借<rt>か</rt></ruby>りる', plain: '借りる', romaji: 'kariru', meaning: 'Meminjam', category: 'Kata Kerja', audio: 'かりる' },
+  { id: 40, ruby: '<ruby>知<rt>し</rt></ruby>る', plain: '知る', romaji: 'shiru', meaning: 'Tahu / Mengetahui', category: 'Kata Kerja', audio: 'しる' },
+
+  // 41-60: Kata Sifat
+  { id: 41, ruby: '<ruby>大<rt>おお</rt></ruby>きい', plain: '大きい', romaji: 'ookii', meaning: 'Besar', category: 'Kata Sifat', audio: 'おおきい' },
+  { id: 42, ruby: '<ruby>小<rt>ちい</rt></ruby>さい', plain: '小さい', romaji: 'chiisai', meaning: 'Kecil', category: 'Kata Sifat', audio: 'ちいさい' },
+  { id: 43, ruby: '<ruby>高<rt>たか</rt></ruby>い', plain: '高い', romaji: 'takai', meaning: 'Tinggi / Mahal', category: 'Kata Sifat', audio: 'たかい' },
+  { id: 44, ruby: '<ruby>安<rt>やす</rt></ruby>い', plain: '安い', romaji: 'yasui', meaning: 'Murah / Tenang', category: 'Kata Sifat', audio: 'やすい' },
+  { id: 45, ruby: '<ruby>新<rt>あたら</rt></ruby>しい', plain: '新しい', romaji: 'atarashii', meaning: 'Baru', category: 'Kata Sifat', audio: 'あたらしい' },
+  { id: 46, ruby: '<ruby>古<rt>ふる</rt></ruby>い', plain: '古い', romaji: 'furui', meaning: 'Lama / Kuno', category: 'Kata Sifat', audio: 'ふるい' },
+  { id: 47, ruby: '<ruby>長<rt>なが</rt></ruby>い', plain: '長い', romaji: 'nagai', meaning: 'Panjang', category: 'Kata Sifat', audio: 'ながい' },
+  { id: 48, ruby: '<ruby>早<rt>はや</rt></ruby>い', plain: '早い', romaji: 'hayai', meaning: 'Cepat / Pagi', category: 'Kata Sifat', audio: 'はやい' },
+  { id: 49, ruby: '<ruby>多<rt>おお</rt></ruby>い', plain: '多い', romaji: 'ooi', meaning: 'Banyak', category: 'Kata Sifat', audio: 'おおい' },
+  { id: 50, ruby: '<ruby>少<rt>すく</rt></ruby>ない', plain: '少ない', romaji: 'sukunai', meaning: 'Sedikit', category: 'Kata Sifat', audio: 'すくない' },
+  { id: 51, ruby: '<ruby>明<rt>あか</rt></ruby>るい', plain: '明るい', romaji: 'akarui', meaning: 'Terang / Ceria', category: 'Kata Sifat', audio: 'あかるい' },
+  { id: 52, ruby: '<ruby>近<rt>ちか</rt></ruby>い', plain: '近い', romaji: 'chikai', meaning: 'Dekat', category: 'Kata Sifat', audio: 'ちかい' },
+  { id: 53, ruby: '<ruby>遠<rt>とお</rt></ruby>い', plain: '遠い', romaji: 'tooi', meaning: 'Jauh', category: 'Kata Sifat', audio: 'とおい' },
+  { id: 54, ruby: '<ruby>白<rt>しろ</rt></ruby>い', plain: '白い', romaji: 'shiroi', meaning: 'Putih', category: 'Kata Sifat', audio: 'しろい' },
+  { id: 55, ruby: '<ruby>黒<rt>くろ</rt></ruby>い', plain: '黒い', romaji: 'kuroi', meaning: 'Hitam', category: 'Kata Sifat', audio: 'くろい' },
+  { id: 56, ruby: '<ruby>赤<rt>あか</rt></ruby>い', plain: '赤い', romaji: 'akai', meaning: 'Merah', category: 'Kata Sifat', audio: 'あかい' },
+  { id: 57, ruby: '<ruby>青<rt>あお</rt></ruby>い', plain: '青い', romaji: 'aoi', meaning: 'Biru', category: 'Kata Sifat', audio: 'あおい' },
+  { id: 58, ruby: '<ruby>押<rt>お</rt></ruby>す', plain: '押す', romaji: 'osu', meaning: 'Mendorong / Menekan', category: 'Kata Kerja', audio: 'おす' },
+  { id: 59, ruby: '<ruby>引<rt>ひ</rt></ruby>く', plain: '引く', romaji: 'hiku', meaning: 'Menarik', category: 'Kata Kerja', audio: 'ひく' },
+  { id: 60, ruby: '<ruby>好<rt>す</rt></ruby>き', plain: '好き', romaji: 'suki', meaning: 'Suka / Gemar', category: 'Kata Sifat', audio: 'すき' },
+
+  // 61-75: Waktu & Hari
+  { id: 61, ruby: '<ruby>今<rt>きょう</rt>日<rt></rt></ruby>', plain: '今日', romaji: 'kyou', meaning: 'Hari ini', category: 'Waktu & Hari', audio: 'きょう' },
+  { id: 62, ruby: '<ruby>明<rt>あ</rt>日<rt>した</rt></ruby>', plain: '明日', romaji: 'ashita', meaning: 'Besok', category: 'Waktu & Hari', audio: 'あした' },
+  { id: 63, ruby: '<ruby>昨<rt>きのう</rt>日<rt></rt></ruby>', plain: '昨日', romaji: 'kinou', meaning: 'Kemarin', category: 'Waktu & Hari', audio: 'きのう' },
+  { id: 64, ruby: '<ruby>毎<rt>まい</rt>日<rt>にち</rt></ruby>', plain: '毎日', romaji: 'mainichi', meaning: 'Setiap Hari', category: 'Waktu & Hari', audio: 'まいにち' },
+  { id: 65, ruby: '<ruby>時<rt>じ</rt>間<rt>かん</rt></ruby>', plain: '時間', romaji: 'jikan', meaning: 'Waktu / Durasi Jam', category: 'Waktu & Hari', audio: 'じかん' },
+  { id: 66, ruby: '<ruby>今<rt>いま</rt></ruby>', plain: '今', romaji: 'ima', meaning: 'Sekarang', category: 'Waktu & Hari', audio: 'いま' },
+  { id: 67, ruby: '<ruby>年<rt>とし</rt></ruby>', plain: '年', romaji: 'toshi / nen', meaning: 'Tahun', category: 'Waktu & Hari', audio: 'とし' },
+  { id: 68, ruby: '<ruby>月<rt>つき</rt></ruby>', plain: '月', romaji: 'tsuki / getsu', meaning: 'Bulan', category: 'Waktu & Hari', audio: 'つき' },
+  { id: 69, ruby: '<ruby>日<rt>ひ</rt></ruby>', plain: '日', romaji: 'hi / nichi', meaning: 'Hari / Matahari', category: 'Waktu & Hari', audio: 'ひ' },
+  { id: 70, ruby: '<ruby>朝<rt>あさ</rt></ruby>', plain: '朝', romaji: 'asa', meaning: 'Pagi Hari', category: 'Waktu & Hari', audio: 'あさ' },
+  { id: 71, ruby: '<ruby>昼<rt>ひる</rt></ruby>', plain: '昼', romaji: 'hiru', meaning: 'Siang Hari', category: 'Waktu & Hari', audio: 'ひる' },
+  { id: 72, ruby: '<ruby>夜<rt>よる</rt></ruby>', plain: '夜', romaji: 'yoru', meaning: 'Malam Hari', category: 'Waktu & Hari', audio: 'よる' },
+  { id: 73, ruby: '<ruby>週<rt>しゅう</rt></ruby>', plain: '週', romaji: 'shuu', meaning: 'Minggu (Pekan)', category: 'Waktu & Hari', audio: 'しゅう' },
+  { id: 74, ruby: '<ruby>分<rt>ふん</rt></ruby>', plain: '分', romaji: 'fun / pun', meaning: 'Menit / Mengerti', category: 'Waktu & Hari', audio: 'ふん' },
+  { id: 75, ruby: '<ruby>時<rt>とき</rt></ruby>', plain: '時', romaji: 'toki / ji', meaning: 'Waktu / Jam (Pukul)', category: 'Waktu & Hari', audio: 'とき' },
+
+  // 76-85: Arah, Posisi & Angka
+  { id: 76, ruby: '<ruby>上<rt>うえ</rt></ruby>', plain: '上', romaji: 'ue', meaning: 'Atas', category: 'Arah & Posisi', audio: 'うえ' },
+  { id: 77, ruby: '<ruby>下<rt>した</rt></ruby>', plain: '下', romaji: 'shita', meaning: 'Bawah', category: 'Arah & Posisi', audio: 'した' },
+  { id: 78, ruby: '<ruby>中<rt>なか</rt></ruby>', plain: '中', romaji: 'naka', meaning: 'Dalam / Tengah', category: 'Arah & Posisi', audio: 'なか' },
+  { id: 79, ruby: '<ruby>外<rt>そと</rt></ruby>', plain: '外', romaji: 'soto', meaning: 'Luar', category: 'Arah & Posisi', audio: 'そと' },
+  { id: 80, ruby: '<ruby>右<rt>みぎ</rt></ruby>', plain: '右', romaji: 'migi', meaning: 'Kanan', category: 'Arah & Posisi', audio: 'みぎ' },
+  { id: 81, ruby: '<ruby>左<rt>ひだり</rt></ruby>', plain: '左', romaji: 'hidari', meaning: 'Kiri', category: 'Arah & Posisi', audio: 'ひだり' },
+  { id: 82, ruby: '<ruby>前<rt>まえ</rt></ruby>', plain: '前', romaji: 'mae', meaning: 'Depan / Sebelum', category: 'Arah & Posisi', audio: 'まえ' },
+  { id: 83, ruby: '<ruby>後<rt>うし</rt></ruby>ろ', plain: '後ろ', romaji: 'ushiro', meaning: 'Belakang / Sesudah', category: 'Arah & Posisi', audio: 'うしろ' },
+  { id: 84, ruby: '<ruby>東<rt>ひがし</rt></ruby>', plain: '東', romaji: 'higashi', meaning: 'Timur', category: 'Arah & Posisi', audio: 'ひがし' },
+  { id: 85, ruby: '<ruby>西<rt>にし</rt></ruby>', plain: '西', romaji: 'nishi', meaning: 'Barat', category: 'Arah & Posisi', audio: 'にし' },
+
+  // 86-100: Alam, Tempat, Orang & Benda
+  { id: 86, ruby: '<ruby>山<rt>やま</rt></ruby>', plain: '山', romaji: 'yama', meaning: 'Gunung', category: 'Alam', audio: 'やま' },
+  { id: 87, ruby: '<ruby>川<rt>かわ</rt></ruby>', plain: '川', romaji: 'kawa', meaning: 'Sungai', category: 'Alam', audio: 'かわ' },
+  { id: 88, ruby: '<ruby>雨<rt>あめ</rt></ruby>', plain: '雨', romaji: 'ame', meaning: 'Hujan', category: 'Alam', audio: 'あめ' },
+  { id: 89, ruby: '<ruby>水<rt>みず</rt></ruby>', plain: '水', romaji: 'mizu', meaning: 'Air', category: 'Alam', audio: 'みず' },
+  { id: 90, ruby: '<ruby>火<rt>ひ</rt></ruby>', plain: '火', romaji: 'hi', meaning: 'Api', category: 'Alam', audio: 'ひ' },
+  { id: 91, ruby: '<ruby>木<rt>き</rt></ruby>', plain: '木', romaji: 'ki', meaning: 'Pohon / Kayu', category: 'Alam', audio: 'き' },
+  { id: 92, ruby: '<ruby>車<rt>くるま</rt></ruby>', plain: '車', romaji: 'kuruma', meaning: 'Mobil / Kendaraan', category: 'Benda', audio: 'くるま' },
+  { id: 93, ruby: '<ruby>電<rt>でん</rt>車<rt>しゃ</rt></ruby>', plain: '電車', romaji: 'densha', meaning: 'Kereta Listrik', category: 'Benda', audio: 'でんしゃ' },
+  { id: 94, ruby: '<ruby>駅<rt>えき</rt></ruby>', plain: '駅', romaji: 'eki', meaning: 'Stasiun', category: 'Benda', audio: 'えき' },
+  { id: 95, ruby: '<ruby>本<rt>ほん</rt></ruby>', plain: '本', romaji: 'hon', meaning: 'Buku', category: 'Benda', audio: 'ほん' },
+  { id: 96, ruby: '<ruby>魚<rt>さかな</rt></ruby>', plain: '魚', romaji: 'sakana', meaning: 'Ikan', category: 'Benda', audio: 'さかな' },
+  { id: 97, ruby: '<ruby>肉<rt>にく</rt></ruby>', plain: '肉', romaji: 'niku', meaning: 'Daging', category: 'Benda', audio: 'にく' },
+  { id: 98, ruby: '<ruby>人<rt>ひと</rt></ruby>', plain: '人', romaji: 'hito / jin', meaning: 'Orang / Manusia', category: 'Orang', audio: 'ひと' },
+  { id: 99, ruby: '<ruby>友<rt>とも</rt>達<rt>だち</rt></ruby>', plain: '友達', romaji: 'tomodachi', meaning: 'Teman / Sahabat', category: 'Orang', audio: 'ともだち' },
+  { id: 100, ruby: '<ruby>先<rt>せん</rt>生<rt>せい</rt></ruby>', plain: '先生', romaji: 'sensei', meaning: 'Guru / Dokter', category: 'Orang', audio: 'せんせい' }
+];
+
+// ================= AUDIO ENGINE (HANYA BACA KANJI/KANA TANPA RT) =================
+function playJapaneseAudio(text) {
+  if (!('speechSynthesis' in window)) return;
+
+  // Hentikan suara yang sedang berjalan agar suara baru langsung keluar seketika
+  window.speechSynthesis.cancel();
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = text;
+
+  // HAPUS SEMUA TAG <rt> DARI TEKS YANG AKAN DIBACA TTS
+  tempDiv.querySelectorAll('rt').forEach(rt => rt.remove());
+  tempDiv.querySelectorAll('.opt-trans, .trans-text, .list-item-trans').forEach(el => el.remove());
+
+  let cleanText = (tempDiv.textContent || tempDiv.innerText || text).trim();
+  cleanText = cleanText.replace(/\([^\)]*\)/g, '').trim();
+
+  if (!cleanText) return;
+
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.lang = 'ja-JP';
+  utterance.rate = 0.88;
+
+  const voices = window.speechSynthesis.getVoices();
+  const jaVoice = voices.find(v => v.lang.startsWith('ja') || v.lang === 'ja_JP');
+  if (jaVoice) utterance.voice = jaVoice;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// ================= THEME & STORAGE LOGIC (KUNCI BERDASARKAN KATA KANJI MURNI) =================
+const STORAGE_KEY = 'duolingo_kanji_mastered_words_v2';
+const EXCLUDED_STORAGE_KEY = 'duolingo_kanji_excluded_words_v2';
+const THEME_KEY = 'duolingo_kanji_theme_mode';
+const AUTOHIDE_KEY = 'duolingo_kanji_autohide_mode_v2';
+
+let masteredKanjiWords = new Set();
+let excludedKanjiWords = new Set();
+let autoHideMastered = false;
+
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  const toggle = document.getElementById('dark-mode-toggle');
+  
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('dark-mode');
+    toggle.checked = true;
+    document.getElementById('theme-icon').innerText = '☀️';
+  } else {
+    document.body.classList.remove('dark-mode');
+    toggle.checked = false;
+    document.getElementById('theme-icon').innerText = '🌙';
+  }
+}
+
+function toggleDarkMode(isDark) {
+  if (isDark) {
+    document.body.classList.add('dark-mode');
+    document.getElementById('theme-icon').innerText = '☀️';
+    localStorage.setItem(THEME_KEY, 'dark');
+  } else {
+    document.body.classList.remove('dark-mode');
+    document.getElementById('theme-icon').innerText = '🌙';
+    localStorage.setItem(THEME_KEY, 'light');
+  }
+}
+
+function loadStorageData() {
+  try {
+    const savedMastered = localStorage.getItem(STORAGE_KEY);
+    if (savedMastered) masteredKanjiWords = new Set(JSON.parse(savedMastered));
+    
+    const savedExcluded = localStorage.getItem(EXCLUDED_STORAGE_KEY);
+    if (savedExcluded) excludedKanjiWords = new Set(JSON.parse(savedExcluded));
+
+    const savedAutoHide = localStorage.getItem(AUTOHIDE_KEY);
+    if (savedAutoHide !== null) {
+      autoHideMastered = (savedAutoHide === 'true');
+      document.getElementById('autohide-toggle').checked = autoHideMastered;
+    }
+  } catch (e) {
+    masteredKanjiWords = new Set();
+    excludedKanjiWords = new Set();
+    autoHideMastered = false;
+  }
+  updateMasteredUIStats();
+}
+
+function saveMasteredToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...masteredKanjiWords]));
+  } catch (e) {}
+  updateMasteredUIStats();
+}
+
+function saveExcludedToStorage() {
+  try {
+    localStorage.setItem(EXCLUDED_STORAGE_KEY, JSON.stringify([...excludedKanjiWords]));
+  } catch (e) {}
+  updateMasteredUIStats();
+}
+
+function toggleAutoHideMastered(checked) {
+  autoHideMastered = checked;
+  try {
+    localStorage.setItem(AUTOHIDE_KEY, checked ? 'true' : 'false');
+  } catch (e) {}
+  renderKanjiList();
+}
+
+function toggleMasteredWord(plainWord, event) {
+  if (event) event.stopPropagation();
+  if (masteredKanjiWords.has(plainWord)) {
+    masteredKanjiWords.delete(plainWord);
+  } else {
+    masteredKanjiWords.add(plainWord);
+  }
+  saveMasteredToStorage();
+  renderKanjiList();
+}
+
+function toggleExcludedWord(plainWord, event) {
+  if (event) event.stopPropagation();
+  if (excludedKanjiWords.has(plainWord)) {
+    excludedKanjiWords.delete(plainWord);
+  } else {
+    excludedKanjiWords.add(plainWord);
+  }
+  saveExcludedToStorage();
+  renderKanjiList();
+}
+
+function quickExcludeCurrentKanji() {
+  const currentQ = quizData[currentIndex];
+  if (!currentQ || !currentQ.targetWord) return;
+
+  excludedKanjiWords.add(currentQ.targetWord);
+  saveExcludedToStorage();
+
+  const btn = document.getElementById('btn-quick-exclude');
+  btn.innerText = `✅ Kanji "${currentQ.targetWord}" Berhasil Dinonaktifkan dari Kuis!`;
+  btn.style.borderColor = 'var(--duo-green)';
+  btn.style.color = 'var(--duo-green-text)';
+  btn.disabled = true;
+}
+
+function updateMasteredUIStats() {
+  const total = kanjiMasterList.length;
+  const count = masteredKanjiWords.size;
+  const excludedCount = excludedKanjiWords.size;
+  const activeCount = total - excludedCount;
+  const pct = Math.round((count / total) * 100);
+
+  document.getElementById('nav-mastered-count').innerText = `${count}/${total}`;
+  document.getElementById('nav-quiz-count').innerText = `${Math.min(50, activeCount)} Soal`;
+  document.getElementById('mastered-stats-text').innerText = `${count} dari ${total} Dikuasai (${pct}%) • ${excludedCount} Dikeluarkan dari Kuis`;
+}
+
+// ================= TAB NAVIGATION =================
+function switchDuoTab(tabName) {
+  const btnQuiz = document.getElementById('tab-btn-quiz');
+  const btnList = document.getElementById('tab-btn-list');
+  const tabQuiz = document.getElementById('tab-quiz');
+  const tabList = document.getElementById('tab-kanji-list');
+
+  if (tabName === 'quiz') {
+    btnQuiz.classList.add('active');
+    btnList.classList.remove('active');
+    tabQuiz.style.display = 'block';
+    tabList.style.display = 'none';
+  } else {
+    btnQuiz.classList.remove('active');
+    btnList.classList.add('active');
+    tabQuiz.style.display = 'none';
+    tabList.style.display = 'block';
+    renderKanjiList();
+  }
+}
+
+// ================= LIST TAB FILTER & RENDER (DENGAN AUTO-HIDE PER KATEGORI) =================
+let currentFilter = 'all';
+
+function setListFilter(filter, btnElement) {
+  currentFilter = filter;
+  const chips = document.querySelectorAll('.duo-filter-chip');
+  chips.forEach(b => b.classList.remove('active'));
+  btnElement.classList.add('active');
+  renderKanjiList();
+}
+
+function filterKanjiList() {
+  renderKanjiList();
+}
+
+function renderKanjiList() {
+  const container = document.getElementById('kanji-cards-container');
+  const searchQuery = document.getElementById('search-kanji').value.trim().toLowerCase();
+  const filterInfo = document.getElementById('category-filter-info');
+  container.innerHTML = '';
+
+  // Hitung jumlah di kategori saat ini
+  let totalInCategory = 0;
+  let hiddenMasteredCount = 0;
+
+  const filtered = kanjiMasterList.filter(item => {
+    const isMastered = masteredKanjiWords.has(item.plain);
+    const isExcluded = excludedKanjiWords.has(item.plain);
+
+    // Cek kecocokan kategori/filter tab
+    let matchesCategory = true;
+    if (currentFilter === 'mastered') {
+      matchesCategory = isMastered;
+    } else if (currentFilter === 'excluded') {
+      matchesCategory = isExcluded;
+    } else if (currentFilter !== 'all') {
+      matchesCategory = (item.category === currentFilter);
+    }
+
+    if (!matchesCategory) return false;
+    totalInCategory++;
+
+    // Jika fitur AUTO-HIDE aktif, sembunyikan yang sudah bermahkota/hafal
+    if (autoHideMastered && isMastered && currentFilter !== 'mastered') {
+      hiddenMasteredCount++;
+      return false;
+    }
+
+    // Filter Pencarian
+    if (searchQuery) {
+      return item.plain.toLowerCase().includes(searchQuery) ||
+             item.romaji.toLowerCase().includes(searchQuery) ||
+             item.meaning.toLowerCase().includes(searchQuery);
+    }
+    return true;
+  });
+
+  // Perbarui Teks Info Filter
+  let categoryLabel = (currentFilter === 'all') ? 'Semua' : currentFilter;
+  if (autoHideMastered && hiddenMasteredCount > 0) {
+    filterInfo.innerText = `Menampilkan ${filtered.length} dari ${totalInCategory} ${categoryLabel} (${hiddenMasteredCount} hafal disembunyikan)`;
+  } else {
+    filterInfo.innerText = `Kategori: ${categoryLabel} (${filtered.length} kanji)`;
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; color: var(--duo-text-muted); padding: 35px 20px; font-weight:800;">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">🎉</div>
+        Semua kanji pada kategori ini sudah kamu tandai hafal!<br>
+        <span style="font-size: 0.85rem; font-weight: 700; opacity: 0.8;">Matikan tombol "Sembunyikan yang Sudah Hafal" jika ingin melihatnya kembali.</span>
+      </div>
+    `;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const isMastered = masteredKanjiWords.has(item.plain);
+    const isExcluded = excludedKanjiWords.has(item.plain);
+
+    const card = document.createElement('div');
+    card.className = `guide-kanji-card ${isMastered ? 'mastered' : ''} ${isExcluded ? 'excluded' : ''}`;
+    
+    card.onclick = () => {
+      playJapaneseAudio(item.audio || item.plain);
+      toggleMasteredWord(item.plain);
+    };
+
+    card.innerHTML = `
+      <div class="card-top-badges">
+        <span class="card-category-tag">${item.category}</span>
+        <div style="display:flex; gap:4px; align-items:center;">
+          <button class="btn-card-action ${isExcluded ? 'active-excluded' : ''}" onclick="toggleExcludedWord('${item.plain}', event)" title="${isExcluded ? 'Aktifkan lagi di kuis' : 'Keluarkan dari kuis'}">
+            ${isExcluded ? '🚫 Dikeluarkan' : '🎯 Di Kuis'}
+          </button>
+          ${isMastered ? '<span>👑</span>' : ''}
+        </div>
+      </div>
+      <div class="card-kanji-val">${item.ruby}</div>
+      <div class="card-romaji-val">${item.romaji}</div>
+      <div class="card-trans-val">${item.meaning}</div>
+      <button class="btn-audio-mini" onclick="event.stopPropagation(); playJapaneseAudio('${item.audio || item.plain}')" title="Dengarkan">🔊</button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ================= QUIZ APP ENGINE (ROLL BERDASARKAN KATA KANJI AKTIF) =================
+const SESSION_QUESTION_COUNT = 50;
+let quizData = [];
+let currentIndex = 0;
+let score = 0;
+let hasAnswered = false;
+let userReviews = [];
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function toggleFurigana(show) {
+  if (show) {
+    document.body.classList.remove('hide-furigana');
+  } else {
+    document.body.classList.add('hide-furigana');
+  }
+}
+
+function toggleTranslation(show) {
+  if (show) {
+    document.body.classList.remove('hide-translation');
+  } else {
+    document.body.classList.add('hide-translation');
+  }
+}
+
+function initQuiz() {
+  // FILTER KELUAR SOAL BERDASARKAN KATA KANJI MURNI
+  const availableQuestions = questionBank.filter(q => !excludedKanjiWords.has(q.targetWord));
+
+  if (availableQuestions.length === 0) {
+    alert("Semua kanji sedang dikeluarkan dari kuis! Buka tab 'Buku Kanji' lalu klik tombol '🚫 Dikeluarkan' untuk mengaktifkannya kembali.");
+    switchDuoTab('list');
+    return;
+  }
+
+  const sessionCount = Math.min(SESSION_QUESTION_COUNT, availableQuestions.length);
+  const randomized = shuffle(availableQuestions);
+  quizData = randomized.slice(0, sessionCount);
+  
+  currentIndex = 0;
+  score = 0;
+  userReviews = [];
+  document.getElementById('quiz-body-area').style.display = 'block';
+  document.getElementById('result-screen').style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  hasAnswered = false;
+  const q = quizData[currentIndex];
+
+  const progressPct = ((currentIndex) / quizData.length) * 100;
+  document.getElementById('progress-fill').style.width = `${progressPct}%`;
+
+  const sheet = document.getElementById('bottom-sheet');
+  sheet.style.display = 'none';
+  sheet.className = 'bottom-sheet';
+
+  // Reset Tombol Eksklusi Cepat di Lembar Jawaban
+  const excludeBtn = document.getElementById('btn-quick-exclude');
+  excludeBtn.disabled = false;
+  excludeBtn.style.borderColor = 'var(--duo-red)';
+  excludeBtn.style.color = 'var(--duo-red)';
+  excludeBtn.innerText = `🚫 Jangan Munculkan Kanji "${q.targetWord}" Lagi di Kuis`;
+
+  document.getElementById('category-chip').innerText = q.category;
+  document.getElementById('question-prompt').innerText = q.prompt;
+
+  const displayContent = document.getElementById('display-content');
+  const optContainer = document.getElementById('options-container');
+  const typingContainer = document.getElementById('typing-container');
+  const typingInput = document.getElementById('typing-input');
+
+  if (q.type === 'hearing') {
+    displayContent.innerHTML = `<button class="audio-play-btn" onclick="playJapaneseAudio('${q.audioText}')" title="Putar Suara">🔊</button>`;
+    optContainer.style.display = 'grid';
+    typingContainer.style.display = 'none';
+    renderOptions(q.options);
+    setTimeout(() => playJapaneseAudio(q.audioText), 200);
+
+  } else if (q.type === 'reading') {
+    displayContent.innerHTML = `<div class="kanji-hero">${q.display}</div>`;
+    optContainer.style.display = 'grid';
+    typingContainer.style.display = 'none';
+    renderOptions(q.options);
+
+  } else if (q.type === 'typing') {
+    displayContent.innerHTML = `<div class="kanji-hero">${q.display}</div>`;
+    optContainer.style.display = 'none';
+    typingContainer.style.display = 'block';
+    typingInput.value = '';
+    typingInput.disabled = false;
+    setTimeout(() => typingInput.focus(), 100);
+
+  } else if (q.type === 'meaning') {
+    displayContent.innerHTML = `<div class="kanji-hero" style="font-size: 2.2rem; color: var(--duo-blue);">"${q.display}"</div>`;
+    optContainer.style.display = 'grid';
+    typingContainer.style.display = 'none';
+    renderOptions(q.options);
+
+  } else if (q.type === 'context') {
+    displayContent.innerHTML = `
+      <div class="sentence-hero">${q.sentence}</div>
+      <div class="sentence-trans">Arti: "${q.sentenceMeaning}"</div>
+    `;
+    optContainer.style.display = 'grid';
+    typingContainer.style.display = 'none';
+    renderOptions(q.options);
+  }
+}
+
+function renderOptions(options) {
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  const shuffled = shuffle(options);
+
+  shuffled.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'duo-btn-opt';
+    btn.innerHTML = `
+      <span class="opt-number">${idx + 1}</span>
+      <span class="opt-kanji-text">${opt.kanji}</span>
+      <span class="opt-trans">${opt.meaning}</span>
+    `;
+
+    btn.onclick = () => {
+      // Putar suara opsi yang ditekan seketika
+      playJapaneseAudio(opt.kanji || opt.romaji);
+      selectOption(btn, opt, shuffled);
+    };
+
+    container.appendChild(btn);
+  });
+}
+
+function selectOption(btnElement, selectedOpt, allOptions) {
+  // JIKA SUDAH MENJAWAB: Tetap putar suaranya, tapi jawaban terkunci tidak bisa diubah!
+  if (hasAnswered) {
+    return;
+  }
+  
+  // KUNCI JAWABAN PERTAMA KALI
+  hasAnswered = true;
+
+  const q = quizData[currentIndex];
+  const correctOpt = allOptions.find(o => o.isCorrect);
+
+  if (selectedOpt.isCorrect) {
+    btnElement.classList.add('correct');
+    showFeedback(true, q, selectedOpt, correctOpt);
+  } else {
+    btnElement.classList.add('wrong');
+    // Highlight opsi yang benar
+    const allButtons = document.querySelectorAll('.duo-btn-opt');
+    allButtons.forEach((b, idx) => {
+      if (allOptions[idx].isCorrect) {
+        b.classList.add('correct');
+      }
+    });
+    showFeedback(false, q, selectedOpt, correctOpt);
+  }
+}
+
+function submitTypingAnswer() {
+  if (hasAnswered) return;
+  const input = document.getElementById('typing-input');
+  const userAns = input.value.trim().toLowerCase();
+
+  if (!userAns) return;
+
+  hasAnswered = true;
+  input.disabled = true;
+
+  const q = quizData[currentIndex];
+  const isCorrect = q.correctAnswers.some(ans => ans.toLowerCase() === userAns);
+
+  playJapaneseAudio(q.targetWord || q.display);
+
+  showFeedback(isCorrect, q, { kanji: userAns, meaning: 'Jawaban ketikanmu' }, { kanji: q.kanjiRuby || q.display, meaning: q.meaning || '' });
+}
+
+function showFeedback(isCorrect, q, selectedOpt, correctOpt) {
+  if (isCorrect) score++;
+
+  userReviews.push({
+    kanji: q.kanjiRuby || q.display || correctOpt.kanji,
+    romaji: q.romaji || correctOpt.romaji || '',
+    meaning: q.meaning || correctOpt.meaning || '',
+    isCorrect: isCorrect
+  });
+
+  const sheet = document.getElementById('bottom-sheet');
+  const sheetIcon = document.getElementById('sheet-icon');
+  const sheetTitle = document.getElementById('sheet-title');
+  const sheetBody = document.getElementById('sheet-body');
+  const nextBtn = document.getElementById('btn-sheet-next');
+
+  sheet.style.display = 'block';
+
+  if (isCorrect) {
+    sheet.className = 'bottom-sheet correct-sheet';
+    sheetIcon.innerText = '✅';
+    sheetTitle.innerText = 'Luar biasa! (正解)';
+    sheetBody.innerHTML = `
+      <div><strong>Jawaban:</strong> <span style="font-size:1.2em;">${correctOpt.kanji}</span> ${correctOpt.romaji ? `(${correctOpt.romaji})` : ''} = <em>${correctOpt.meaning}</em></div>
+      <div class="sheet-tip">💡 <strong>Catatan:</strong> ${q.explanation}</div>
+    `;
+    nextBtn.className = 'btn-duo-cta';
+    nextBtn.innerText = 'Lanjut ➔';
+  } else {
+    sheet.className = 'bottom-sheet wrong-sheet';
+    sheetIcon.innerText = '❌';
+    sheetTitle.innerText = 'Kurang tepat!';
+    sheetBody.innerHTML = `
+      <div>👉 <strong>Pilihanmu:</strong> <span style="font-size:1.15em;">${selectedOpt.kanji}</span> = <em>${selectedOpt.meaning}</em></div>
+      <div>👉 <strong>Jawaban Benar:</strong> <span style="font-size:1.2em; color:var(--duo-green-text);">${correctOpt.kanji}</span> ${correctOpt.romaji ? `(${correctOpt.romaji})` : ''} = <em>${correctOpt.meaning}</em></div>
+      <div class="sheet-tip">💡 <strong>Kenapa salah?</strong> ${q.explanation}</div>
+    `;
+    nextBtn.className = 'btn-duo-cta wrong-cta';
+    nextBtn.innerText = 'Mengerti ➔';
+  }
+
+  nextBtn.focus();
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-body-area').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+
+  const reviewList = document.getElementById('review-list');
+  reviewList.innerHTML = '<h4 style="margin-bottom: 12px; font-weight:900;">Evaluasi Sesi Ini:</h4>';
+
+  userReviews.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = `review-duo-item ${item.isCorrect ? 'pass' : 'fail'}`;
+    div.innerHTML = `
+      <div>
+        <strong>${idx + 1}. </strong>
+        <span style="font-size: 1.15em; margin-right: 4px;">${item.kanji}</span> 
+        <span style="color: var(--duo-text-sub);">(${item.romaji})</span> — ${item.meaning}
+      </div>
+      <div>${item.isCorrect ? '✅' : '❌'}</div>
+    `;
+    reviewList.appendChild(div);
+  });
+}
+
+function restartQuiz() {
+  initQuiz();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    if (!hasAnswered && quizData[currentIndex]?.type === 'typing') {
+      submitTypingAnswer();
+    } else if (hasAnswered && document.getElementById('bottom-sheet').style.display === 'block') {
+      nextQuestion();
+    }
+  }
+});
+
+// STARTUP INITIALIZATION
+window.onload = () => {
+  initTheme();
+  loadStorageData();
+  initQuiz();
+};
+</script>
+</body>
+</html>
